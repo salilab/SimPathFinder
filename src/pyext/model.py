@@ -525,28 +525,5 @@ class PathwaySimilarity(object):
 
 
 
-if __name__=='__main__':
-	PW=PathwayClassifier()
-	data_df=PW.clean_dataframe()
-	model_gensim=PW.model
-	X_train,Y_train,X_test,Y_test=PW.get_80_cat(data_df,model_gensim)
-	trained_model=PW.model_validation(X_train,Y_train,X_test,Y_test)
-	#print (PW.kegg_analysis(model_gensim,trained_model[2]))
-	
-	X_train,Y_train,X_test,Y_test=PW.get_80_cat_annot(data_df,model_gensim,annot=3)
-	trained_model=PW.model_validation(X_train,Y_train,X_test,Y_test,subtitle='annot3')
-	X_train,Y_train,X_test,Y_test=PW.get_80_cat_annot(data_df,model_gensim,annot=2)
-	trained_model=PW.model_validation(X_train,Y_train,X_test,Y_test,subtitle='annot2')
-	X_train,Y_train,X_test,Y_test=PW.get_80_cat_annot(data_df,model_gensim,annot=1)
-	trained_model=PW.model_validation(X_train,Y_train,X_test,Y_test,subtitle='annot1')
-	#X_train,Y_train,X_test,Y_test=PW.get_X_and_Y_control(data_df)
-	#PW.model_validation(X_train,Y_train,X_test,Y_test,subtitle='OHC')
-	'''
-	PW=PathwaySimilarity()
-	valid=[['ec:2.3.1.9','ec:2.8.3.5', 'ec:2.3.3.10',
- 			'ec:4.1.1.4','ec:1.1.1.30','ec:4.1.3.4']]
-	df_sim=PW.get_ranking_list(valid)
-	print (df_sim.sort_values(by=['Similarity']).tail(10))
-	'''
 
 
