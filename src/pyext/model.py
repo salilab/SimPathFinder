@@ -230,9 +230,9 @@ class PathwayClassifier(object):
 			fpr[i], tpr[i], _ = roc_curve(test_array[:, i], prediction_prob[:, i]) 
 			roc_auc[i] = auc(fpr[i], tpr[i])
 			average_roc_auc[i] = roc_auc_score(test_array[:, i],
-															prediction_prob[:, i])	        
+												prediction_prob[:, i])	        
 		fpr["micro"], tpr["micro"], _ = roc_curve(test_array.ravel(),
-																	prediction_prob.ravel())
+												prediction_prob.ravel())
 		
 		average_roc_auc["micro"] = roc_auc_score(test_array, prediction_prob,
 														 average="micro")
