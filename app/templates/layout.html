@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+   <head>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta charset="utf-8">
+      <title>Flask Parent Template</title>
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/salilab.css') }}">
+
+   </head>
+   <body>
+      <header>
+         <div class="container-fluid">
+          <div id="header1">
+     <h1 class="logo" align='center' class='text-center' style="border: none; margin-top: 2px; margin-right: 2px; margin-left: 2px;"><a  href={{ url_for('home') }}> SimPathFinder </a></h1>
+      </div>
+      <div id="header1">
+          <h3 class="logo" align='center' class='text-center' style="border: none; margin-top: 2px; margin-right: 2px; margin-left: 2px;"> Find pathway type/class based on MetaCyc ontology and similar pathways in KEGG and MetaCyc based on partially annotated enzymes</h3>
+     </div>
+      </header>
+      <body>
+        <div id="container-fluid">
+          <div id ="navigation_lab">
+             <a href="//salilab.org/">Sali Lab Home</a>
+              &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/modweb/">ModWeb</a>
+              &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/modbase/">ModBase</a>
+              &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/evaluation/">ModEval</a>
+              &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/peptide/">PCSS</a>
+              &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/foxs/">FoXS</a>
+              &nbsp;&nbsp;&nbsp;
+            <a href="//integrativemodeling.org/">IMP</a>
+              &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/multifit/">MultiFit</a>
+              &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/modpipe/">ModPipe</a>
+              &nbsp;&nbsp;&nbsp;
+          </div>
+        </div>
+
+        <div id="container-fluid">
+          <div id ="navigation_second">
+            <a href="https://modbase.compbio.ucsf.edu/account/">Login</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="/foxsdock/">Web Server</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="/about">About SimPathFinder</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="/help">Help</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="/links">Links</a>
+            &nbsp;&nbsp;&nbsp;
+          </div>
+        </div>
+
+      <div class="container">
+         <div class="card border" style="border-color: solid black; margin-top:20px">
+            <div class="card-body" style="background-color: white; height: 60rem;">
+               <h3 class="font-weight-light">About</h3>
+               <p class="lead">This application is limited to identifying co-occurring enzyme clusters in prokaryotes. Metabolic network data mined from <a href='https://www.genome.jp/kegg/'>KEGG database</a> is used as a <i>document</i>, enzyme classification numbers are used as <i>words</i> to identify hidden co-occurring enzyme clusters (CEC) as <i>topics</i>. For details on the method, refer the <a href="https://github.com/saijananiganesan/LDAPathwayPrediction">code repository </a></p>
+               <h3 class="font-weight-light">Usage</h3>
+               <p class="lead">There are two options to use this application: </p>
+               <ol type='1'>
+                  <li class="lead">Identify similar pathways using LDA given a list of enzyme classification numbers. </li>
+                  <li class="lead">Identify similar pathways using FastText algorithm given a list of enzyme classification numbers. </li>
+               </ol>
+               <h3 class="font-weight-light">Choosing the right application of interest</h3>
+               <ol type='1'>
+                  <li class="lead"><b>LDA</b>: To be chosen if enzymes are present in the KEGG database. </li>
+                  <li class="lead"><b>FastText</b>: To be chosen if the input list contains enzymes that do not frequently occur in prokaryotes. </li>
+               </ol>
+               <p class="lead"><b><i>Note: </i></b>FastText works by considering similarity between words (or characters). For example, EC.1.2.3.4 will be characterized as similar to EC.1.2.3.98 by the algorithm even if EC.1.2.3.4 was never observed during training. Whereas LDA will simply assign a zero probability to enzymes that the model has never seen before. </p>
+            </div>
+         </div>
+      </div>
+
+
+
+
+      </body>
+<footer>
+<div id="container">
+  <p class="logo1" align='center' class='text-center' style="border: none; margin-bottom: 0px; margin-right: 0px; margin-left: 0px;">&copy; Copyright 2020, Sai J. Ganesan (ganesans@salilab.org)</p>
+        </div>
+</footer>
+
+</html>

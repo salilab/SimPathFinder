@@ -38,6 +38,9 @@ from sklearn.metrics import average_precision_score,roc_auc_score
 
 
 class EnsembleClassifier(BaseEstimator, ClassifierMixin):
+	'''
+	ensemble classifier that makes decision on mean probabilities  
+	'''
 	def __init__(self, classifiers=None):
 		self.classifiers = classifiers
 		
@@ -59,6 +62,9 @@ class EnsembleClassifier(BaseEstimator, ClassifierMixin):
 
 
 class PathwayClassifier(object):
+	'''
+	
+	'''
 	def __init__(self):
 		self.path='../../data/'
 		self.models='../../data/models/'
@@ -445,19 +451,19 @@ class PathwayClassifier(object):
 		return trained_models
 
 	def kegg_analysis(self,model_gensim,classification_model,categories={'biosynthesis':3,'degradation':4,'glycan':6}):
-	    kegg_df=pickle.load(open(self.path+self.kegg,'rb'))
-	    kegg_df['Name']=kegg_df.Name.str.lower()
-	    print (kegg_df.head())
-	    print (kegg_df.shape)
-	    predictions={}
-	    for key,val in categories.items():
-	        df=kegg_df[(kegg_df['Name'].str.contains(key))]
-	        df['pathway_vector']=df.EC_set.apply(self.pathway_vector,model_gensim=model_gensim)
-	        prediction=classification_model.predict(list(df.pathway_vector))
-	        correct_p=[i for i,j in enumerate(prediction) if j[val-1]==1]
-	        all_p=prediction.shape[0]
-	        predictions[key]=(len(correct_p),all_p)
-	    return predictions
+		kegg_df=pickle.load(open(self.path+self.kegg,'rb'))
+		kegg_df['Name']=kegg_df.Name.str.lower()
+		print (kegg_df.head())
+		print (kegg_df.shape)
+		predictions={}
+		for key,val in categories.items():
+			df=kegg_df[(kegg_df['Name'].str.contains(key))]
+			df['pathway_vector']=df.EC_set.apply(self.pathway_vector,model_gensim=model_gensim)
+			prediction=classification_model.predict(list(df.pathway_vector))
+			correct_p=[i for i,j in enumerate(prediction) if j[val-1]==1]
+			all_p=prediction.shape[0]
+			predictions[key]=(len(correct_p),all_p)
+		return predictions
 
 
 class PathwaySimilarity(object):
@@ -490,6 +496,22 @@ class PathwaySimilarity(object):
 		EC_name={tup[0]:tup[1] for tup in list(zip(Kegg_metacyc['Map'],Kegg_metacyc['Name']))}
 		return EC_list,EC_dict,EC_name
 
+	def similarity_dict_kegg(self):
+		data_df=pickle.load(open(self.path+self.kegg,'rb'))
+		data_KEGG_part=data_df[['Map','Name','EC','EC_set']]
+		EC_list=data_KEGG_part['EC_set'].to_list()
+		EC_dict={tup[0]:tup[1] for tup in list(zip(data_KEGG_part['Map'],data_KEGG_part['EC_set']))}
+		EC_name={tup[0]:tup[1] for tup in list(zip(data_KEGG_part['Map'],data_KEGG_part['Name']))}
+		return EC_list,EC_dict,EC_name
+
+	def similarity_dict_metacyc(self):
+		data_df_multi=pickle.load(open(self.path+self.fname,'rb'))
+		data_Metacyc_part=data_df_multi[['Map','Name','EC','EC_set']]
+		EC_list=data_Metacyc_part['EC_set'].to_list()
+		EC_dict={tup[0]:tup[1] for tup in list(zip(data_Metacyc_part['Map'],data_Metacyc_part['EC_set']))}
+		EC_name={tup[0]:tup[1] for tup in list(zip(data_Metacyc_part['Map'],data_Metacyc_part['Name']))}
+		return EC_list,EC_dict,EC_name
+
 	def get_ranking_list(self,valid):
 		data,data_dict,data_dict_name=self.similarity_dict()
 		valid_dict=dict()
@@ -508,9 +530,24 @@ class PathwaySimilarity(object):
 												  columns=['Pathway_test','Pathway_train','Pathway_name','Similarity','Percentage']))
 		return df_sim
 
-	def get_ranking_single(self,valid):
-		data,data_dict,data_dict_name=self.similarity_dict()
+	def get_ranking_single(self,valid,metacyc=True,kegg=False,combined=False):
+		if combined:
+			data,data_dict,data_dict_name=self.similarity_dict()
 		df_sim=pd.DataFrame(columns=['Pathway_test','Pathway_train','Similarity'])
+		for k,l in enumerate(data):
+			sim=self.model.wv.n_similarity(valid, data[k])
+			pathway=list(data_dict.keys())[k]
+			pathway_name=data_dict_name[list(data_dict.keys())[k]]
+			perc=round(sim*100,2)
+			if sim>0:
+				lst=[['UNK',list(data_dict.keys())[k],pathway_name,sim,perc]]
+				df_sim=df_sim.append(pd.DataFrame(lst,columns=['Pathway_test','Pathway_train','Pathway_name','Similarity','Percentage']))
+		if not combined:
+			df_sim=pd.DataFrame() 
+		
+		if metacyc:
+			data,data_dict,data_dict_name=self.similarity_dict_metacyc()
+		df_simM=pd.DataFrame(columns=['Pathway_test','Pathway_train','Similarity'])
 		for k,l in enumerate(data):
 			sim=self.model.wv.n_similarity(valid, data[k])
 			pathway=list(data_dict.keys())[k]
@@ -519,9 +556,29 @@ class PathwaySimilarity(object):
 			perc=round(sim*100,2)
 			if sim>0:
 				lst=[['UNK',list(data_dict.keys())[k],pathway_name,sim,perc]]
-				df_sim=df_sim.append(pd.DataFrame(lst,
-												  columns=['Pathway_test','Pathway_train','Pathway_name','Similarity','Percentage']))
-		return df_sim
+				df_simM=df_simM.append(pd.DataFrame(lst,columns=['Pathway_test','Pathway_train','Pathway_name','Similarity','Percentage']))
+		if not metacyc:
+			df_simM=pd.DataFrame() 
+
+		if kegg:
+			data,data_dict,data_dict_name=self.similarity_dict_kegg()
+		df_simK=pd.DataFrame(columns=['Pathway_test','Pathway_train','Similarity'])
+		for k,l in enumerate(data):
+			sim=self.model.wv.n_similarity(valid, data[k])
+			pathway=list(data_dict.keys())[k]
+			pathway_name=data_dict_name[list(data_dict.keys())[k]]
+				#jaccard=len(list(set(j).intersection(l)))/len(list(set(j).union(l)))
+			perc=round(sim*100,2)
+			if sim>0:
+				lst=[['UNK',list(data_dict.keys())[k],pathway_name,sim,perc]]
+				df_simK=df_simK.append(pd.DataFrame(lst,columns=['Pathway_test','Pathway_train','Pathway_name','Similarity','Percentage']))
+		if not kegg:
+			df_simK=pd.DataFrame() 
+		
+		df_sim=df_sim.sort_values(by=['Similarity'])
+
+		return df_simM.sort_values(by=['Similarity']),df_simK.sort_values(by=['Similarity']),df_sim.sort_values(by=['Similarity'])
+
 
 
 
