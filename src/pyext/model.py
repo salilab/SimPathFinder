@@ -63,7 +63,7 @@ class EnsembleClassifier(BaseEstimator, ClassifierMixin):
 
 class PathwayClassifier(object):
 	'''
-	
+
 	'''
 	def __init__(self):
 		self.path='../../data/'
@@ -154,7 +154,7 @@ class PathwayClassifier(object):
 	def pathway_vector(self,pathway,model_gensim):
 		return np.mean(model_gensim[pathway],axis=0)
 	 
-	def get_80_cat(self,df,model_gensim,categories=[]):
+	def get_stratified_categories(self,df,model_gensim,categories=[]):
 		if len(categories)<1:
 			categories=self.categories
 		df['pathway_vector'] = df.EC_set.apply(self.pathway_vector,model_gensim=model_gensim)
@@ -174,7 +174,7 @@ class PathwayClassifier(object):
 		Y_test=test[categories]
 		return X_train,Y_train,X_test,Y_test
 
-	def get_80_cat_annot(self,df,model_gensim,categories=[],annot=3):
+	def get_stratified_categories_annot(self,df,model_gensim,categories=[],annot=3):
 		if len(categories)<1:
 			categories=self.categories
 		if annot==3:
@@ -397,7 +397,7 @@ class PathwayClassifier(object):
 		if len(categories)<1:
 			categories=self.categories
 		data_df_multi=self.clean_dataframe()
-		X_train,Y_train,X_test,Y_test=self.get_80_cat(data_df_multi,categories)
+		X_train,Y_train,X_test,Y_test=self.get_stratified_categories(data_df_multi,categories)
 		if rf:
 			grid=self.grid_search_rf(X_train,Y_train)
 			self.fit_best_param(grid,X_train,Y_train,X_test,Y_test,title='rf')
@@ -437,6 +437,10 @@ class PathwayClassifier(object):
 		for i,tup in enumerate(models):
 			model=tup[1].fit(X_train, Y_train)
 			trained_models.append(model)
+			pkl_filename = tup[0]+"pickle_model.pkl"
+			with open(self.results+pkl_filename, 'wb') as file:
+				print ("Saved classifier: "+tup[0])
+				pickle.dump(model, file)
 			prediction_prob=model.predict_proba(X_test)
 			Y_pred = model.predict(X_test)
 			test_array = Y_test.to_numpy()

@@ -8,7 +8,7 @@ def run_complete_annotation():
 	PW=PathwayClassifier()
 	data_df=PW.clean_dataframe()
 	model_gensim=PW.model
-	X_train,Y_train,X_test,Y_test=PW.get_80_cat(data_df,model_gensim)
+	X_train,Y_train,X_test,Y_test=PW.get_stratified_categories(data_df,model_gensim)
 	trained_model=PW.model_validation(X_train,Y_train,X_test,Y_test)
 	return trained_model
 
@@ -19,7 +19,7 @@ def run_partial_annotation_3():
 	PW=PathwayClassifier()
 	data_df=PW.clean_dataframe()
 	model_gensim=PW.model
-	X_train,Y_train,X_test,Y_test=PW.get_80_cat_annot(data_df,model_gensim,annot=3)
+	X_train,Y_train,X_test,Y_test=PW.get_stratified_categories_annot(data_df,model_gensim,annot=3)
 	trained_model=PW.model_validation(X_train,Y_train,X_test,Y_test,subtitle='annot3')
 	return trained_model
 
@@ -30,7 +30,7 @@ def run_partial_annotation_2():
 	PW=PathwayClassifier()
 	data_df=PW.clean_dataframe()
 	model_gensim=PW.model
-	X_train,Y_train,X_test,Y_test=PW.get_80_cat_annot(data_df,model_gensim,annot=2)
+	X_train,Y_train,X_test,Y_test=PW.get_stratified_categories_annot(data_df,model_gensim,annot=2)
 	trained_model=PW.model_validation(X_train,Y_train,X_test,Y_test,subtitle='annot2')
 	return trained_model
 
@@ -41,7 +41,7 @@ def run_partial_annotation_1():
 	PW=PathwayClassifier()
 	data_df=PW.clean_dataframe()
 	model_gensim=PW.model
-	X_train,Y_train,X_test,Y_test=PW.get_80_cat_annot(data_df,model_gensim,annot=1)
+	X_train,Y_train,X_test,Y_test=PW.get_stratified_categories_annot(data_df,model_gensim,annot=1)
 	trained_model=PW.model_validation(X_train,Y_train,X_test,Y_test,subtitle='annot1')
 	return trained_model
 
@@ -78,7 +78,4 @@ def check_similarity_list():
 	return df_sim
 
 if __name__=='__main__':
-	df_simM,df_simK,df_sim=check_similarity_single()
-	print (df_simM.tail())
-	print (df_simK.tail())
-	print (df_sim.tail())
+	run_complete_annotation()
