@@ -1,6 +1,9 @@
 from model import EnsembleClassifier,PathwayClassifier,PathwaySimilarity
 from gensim.models.fasttext import FastText as FT_gensim
+import pickle
 
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 class RunServerClassifier(object):
 	'''
@@ -12,12 +15,11 @@ class RunServerClassifier(object):
 		self.results='../../data/results/'
 		self.fname='df_metacyc_multilabel_1.pkl'
 		self.kegg='df_kegg.pkl'
-		self.model_name='model5-10-100.model'
 		self.model=FT_gensim.load(self.models+'model5-10-100.model')
 		self.classifier=self.results+'enspickle_model.pkl'
 
 
-	def Check_format(self,sample):
+	def check_format(self,sample):
 		sample_lower=sample.lower()
 		try:
 			sample_list=sample_lower.split(',')
@@ -42,22 +44,20 @@ class RunServerClassifier(object):
 			if True in ec_class_isal: 
 				printed_text= "Input not in the right format, your ec number has strings"
 				return 1,printed_text
-			if len(list(ec_class))>=7: 
-				printed_text= "Input not in the right format, you are not using EC classe 1-7"
-				return 1,printed_text           
 		except:
 				printed_text= "Input not in the right format, you might have forgotten using ec or the semicolon between ec and the numbers"
 				return 1,printed_text
-
 		try:
-			# check if ec class digits are int and are less than 7
-			ec_class_ind=[i.split(':')[1].split('.') for i in sample_list]
-			ec_class=set([j for i in ec_class_ind for j in i ])
-			ec_class_incorrect= [i for i in list(ec_class) if int(i) not in range(1,8)]
-			if len(ec_class_incorrect)>0: 
+			# check if correct number and type of ec classes are being used
+			ec_class_1=set([int(i.split(':')[1].split('.')[0]) for i in sample_list])
+			ec_class_2=[i for i in ec_class_1 if i >=7]
+			if len(list(ec_class_1))>=7: 
 				printed_text= "Input not in the right format, you are not using EC classe 1-7"
-				return 1,printed_text     
-           
+				return 1,printed_text   
+			if len(ec_class_2)>0: 
+				printed_text= "Input not in the right format, you are not using EC classe 1-7"
+				return 1,printed_text           
+        
 		except:
 				printed_text= "Input not in the right format, you might have forgotten using ec or the semicolon between ec and the numbers"
 				return 1,printed_text
@@ -76,17 +76,36 @@ class RunServerClassifier(object):
 
 		return 0,"Input in the right format"
 
-	def run_classifier(self,):
-		with open(pkl_filename, 'rb') as file:
-			pickle_model = pickle.load(file)
+	def run_classifier(self,sample):
+		sample_list=sample.lower().split(',')
 		PW=PathwayClassifier()
-		data_df=PW.clean_dataframe()
-		model_gensim=PW.model
-		X_train,Y_train,X_test,Y_test=PW.get_stratified_categories(data_df,model_gensim)
-		trained_model=PW.model_validation(X_train,Y_train,X_test,Y_test)
-		return trained_model
+		model_gensim=self.model
+		X_test=PW.pathway_vector(sample_list,self.model).reshape(1,-1)
+		with open(self.classifier, 'rb') as file:
+			pickle_model = pickle.load(file)
+
+		prediction_prob=pickle_model.predict_proba(X_test)
+		Y_pred = pickle_model.predict(X_test)
+		classes=[ i[0] for i in list(zip(PW.categories,Y_pred[0])) if i[1]==1 ]
+		classes_prob=[str(round(i[1],4)) for i in list(zip(PW.categories,prediction_prob[0])) if i[0] in classes]
+		output_text1= 'The predicted class/classes: ' +' ,'.join(classes) 
+		output_text2='The predicted class probability/probabilities: ' +' ,'.join(classes_prob)
+		return output_text1,output_text2
+
+	def run_similarity(self,sample):
+		sample_list=sample.lower().split(',')
+		PW=PathwaySimilarity()
+		df_simM,df_simK,df_sim=PW.get_ranking_single(sample_list)
+		df_simM['Pathway Link']=df_simM['Pathway_train'].apply(lambda x:'https://biocyc.org/META/new-image?object='+str(x))
+		Metacyc=df_simM[['Pathway_train','Percentage','Pathway Link']].sort_values(by=['Percentage'],ascending=False).head().values.tolist()
+		Metacyc.insert(0,['Pathway','Percentage Similarity(%)','Pathway Link'])
+		df_simK['Pathway Link']=df_simK['Pathway_train'].apply(lambda x:'https://www.genome.jp/dbget-bin/www_bget?'+str(x))
+		Kegg=df_simK[['Pathway_train','Percentage','Pathway Link']].sort_values(by=['Percentage'],ascending=False).head().values.tolist()
+		Kegg.insert(0,['Pathway','Percentage Similarity(%)','Pathway Link'])
+		return Metacyc,Kegg
 
 if __name__=='__main__':
 	R=RunServerClassifier()
-	print (R.Check_format('ec:1.1.1,ec:1.1,ec:2.4.5.1,ec:1.1.1.1'))
+	#print (R.check_format('ec:1.2.3.4,ec:2.3.4.44,ec:3.1.23.1'))
+	R.run_similarity('ec:1.2.3.4,ec:2.3.4.44,ec:3.1.23.1')
 

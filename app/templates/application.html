@@ -52,8 +52,6 @@
             &nbsp;&nbsp;&nbsp;
             <a href="/about">About SimPathFinder</a>
             &nbsp;&nbsp;&nbsp;
-            <a href="/help">Help</a>
-            &nbsp;&nbsp;&nbsp;
         </div>
     </div>
     </div>
@@ -67,13 +65,13 @@
                     <p>This application is designed to aid in metabolic pathway discovery. SimPathFinder utilizes all available information on annotated metabolic pathways from <a href='https://metacyc.org/'>MetaCyc</a> and <a href='https://www.genome.jp/kegg/'>KEGG</a> to predict a pathway ontology (or type/class). The required input is a list of partially (<i>i.e.</i> two or three digit enzyme annotations, <i>e.g.</i> EC:1.2, EC:1.4.3) or fully (<i>i.e.</i> four digit enzyme annotations <i>e.g.</i> EC:1.2.2.3) annotated enzymes. The output pathway annotation can either be (i) a pathway ontology, (ii) a list of similar pathways from MetaCyc and KEGG databases, or (iii) both. For more information on the results refer to the <a href={{ url_for('about') }}>about page</a></p>
                      <p style="margin-bottom:2cm" ;> </p>
 
-                    <a type="button" class="btn btn-primary btn-lg btn-block" id="navigation_labb" href={{ url_for('Classification') }}>
-                        <h3 class='text-align: center'>Pathway Ontology</h3>
+                    <a type="button" class="btn btn-primary " style="height:70px;width:230px" data-toggle="button" aria-pressed="false" autocomplete="off" id="navigation_labb" href={{ url_for('Classification') }}>
+                        <h4 class='text-align: center'>Pathway Ontology</h4>
                     </a>
                      <p style="margin-bottom:1cm" ;> </p>
 
-                     <a type="button" class="btn btn-primary btn-lg btn-block" id="navigation_labb" href={{ url_for('Similarity') }}>
-                        <h3>Similar pathways</h3>
+                     <a type="button" class="btn btn-primary" style="height:70px;width:230px" id="navigation_labb" href={{ url_for('Similarity') }}>
+                        <h4>Similar pathways</h4>
                     </a>
 
                 </div>
@@ -83,8 +81,9 @@
 
    </body>
 <footer>
-<div class="container-fluid">
-  <p class="logo1" align='center' class='text-center' style="border: none; margin-bottom: 0px; margin-right: 0px; margin-left: 0px;">&copy; Copyright 2020, Sai J. Ganesan (ganesans@salilab.org)</p>
-        </div>
+   <hr size="2" width="80%">
+    <div class="address">
+        <p class="logo1" align='center' class='text-center' style="border: none; margin-bottom: 5px; margin-top: 5px; margin-right: 0px; margin-left: 0px;">Contact: <a href="ganesans@salilab.org">ganesans@salilab.org</a></p>
+    </div>
 </footer>
 </html>

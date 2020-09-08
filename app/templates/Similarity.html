@@ -1,5 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+  $("#hide").click(function(){
+    $("p").hide();
+  });
+  $("#navigation_labb").click(function(){
+    $("p.lead").append("Please wait 2-3min for results to be calculated......");
+  });
+});
+</script>
 
 <head>
     <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
@@ -52,8 +63,6 @@
             &nbsp;&nbsp;&nbsp;
             <a href="/about">About SimPathFinder</a>
             &nbsp;&nbsp;&nbsp;
-            <a href="/help">Help</a>
-            &nbsp;&nbsp;&nbsp;
         </div>
     </div>
     </div>
@@ -73,13 +82,16 @@
                   </div>
                   <input type="submit" class="btn btn-primary" id='navigation_labb' value="Get similar pathways">
                </form>
+                <p style="margin-bottom:1cm" ;> </p>
+                <p class="lead"> </p>
             </div>
          </div>
       </div>
    </body>
 <footer>
-<div class="container-fluid">
-  <p class="logo1" align='center' class='text-center' style="border: none; margin-bottom: 0px; margin-right: 0px; margin-left: 0px;">&copy; Copyright 2020, Sai J. Ganesan (ganesans@salilab.org)</p>
-        </div>
+   <hr size="2" width="80%">
+    <div class="address">
+        <p class="logo1" align='center' class='text-center' style="border: none; margin-bottom: 5px; margin-top: 5px; margin-right: 0px; margin-left: 0px;">Contact: <a href="ganesans@salilab.org">ganesans@salilab.org</a></p>
+    </div>
 </footer>
 </html>

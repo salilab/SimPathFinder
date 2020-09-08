@@ -9,6 +9,13 @@ import sqlite3 as sql
 from dbconnect import create_users_table,create_login_table
 import gensim
 import pickle
+sys.path.insert(0, "../src/pyext/")
+sys.path.append('../data/models/')
+from run_server import RunServerClassifier
+from model import EnsembleClassifier,PathwayClassifier,PathwaySimilarity
+from gensim.models.fasttext import FastText as FT_gensim
+import warnings
+
 
 #############
 #JINJA
@@ -40,40 +47,26 @@ def dated_url_for(endpoint, **values):
             values['q'] = int(os.stat(file_path).st_mtime)
     return url_for(endpoint, **values)
 
+@app.after_request
+def add_header(r):
+    r.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
+    r.headers["Pragma"] = "no-cache"
+    r.headers["Expires"] = "0"
+    r.headers['Cache-Control'] = 'public, max-age=0'
+    return r
+
 @app.route("/")
 @app.route("/home/")
 def home():
     return render_template("layout.html")
 
+@app.route("/help/")
+def help():
+    return render_template("help.html")
+
 @app.route("/about/")
 def about():
     return render_template("about.html")
-
-@app.route("/LDA/", methods=['GET','POST'])
-def LDA():
-    if request.method=='POST':
-        enzyme_string=request.form['list']
-        if enzyme_string:
-            num,text1=TestSample().Check_format(enzyme_string)
-            if num==1:
-                return "<h1>{}</h1>".format(text1)
-            if num==0:
-                try:
-                    result_df=TestSample().LDA_results(enzyme_string)
-                    #print ("result_df",result_df)
-                    result_dict=TestSample().convert_df_to_jsdict(result_df)
-                    result_list=TestSample().dict_to_JSlist(result_dict)
-                    Template_Dict={}
-                    Template_Dict['results_table']=result_list
-                    #print (result_list)
-                    write_html(Template_Dict,"LDAResult_temp.html","LDAResults.html")
-                    return redirect(url_for('LDAResult'))
-                except:
-                    return "<h1>Unexpected error, please email ganesans@salilab.org for help.</h1>"
-        else:
-            return "<h1>Please enter enzyme list to proceed.</h1>"
-
-    return render_template("LDA.html")
 
 @app.route("/application/")
 def application():
@@ -82,56 +75,62 @@ def application():
     else:
         return "<h1>Please fill your details to proceed.</h1>"
 
-@app.route("/Similarity/")
+@app.route("/Similarity/",methods=['GET','POST'])
 def Similarity():
+    if request.method=='POST':
+        enzyme_string=request.form['list']
+        if 'name' not in list(globals().keys()) or 'email' not in list(globals().keys()):
+            return "<h1>Please login and then enter enzyme list to proceed.</h1>"
+        if enzyme_string:
+            num,text1=RunServerClassifier().check_format(enzyme_string)
+            print (num,text1)
+            if num==1 :
+                return "<h1>{}</h1>".format(text1)
+            if num==0 : 
+                try:
+                    metacyc,kegg=RunServerClassifier().run_similarity(enzyme_string)
+                    Template_Dict={}
+                    Template_Dict['results_table_M']=metacyc
+                    Template_Dict['results_table_K']=kegg
+                    write_html(Template_Dict,"Similarity_temp.html","Similarity_Results.html")
+                    return redirect(url_for('Similarity_Results'))
+                except:
+                    return "<h1>Unexpected error, please email ganesans@salilab.org for help.</h1>"
+
     return render_template("Similarity.html")
 
 @app.route("/Classification/", methods=['GET','POST'])
 def Classification():
     if request.method=='POST':
         enzyme_string=request.form['list']
+        if 'name' not in list(globals().keys()) or 'email' not in list(globals().keys()):
+            return "<h1>Please login and then enter enzyme list to proceed.</h1>"
         if enzyme_string:
-            num,text1=TestSample().Check_format(enzyme_string)
-            if num==1:
+            num,text1=RunServerClassifier().check_format(enzyme_string)
+            print (num,text1)
+            if num==1 :
                 return "<h1>{}</h1>".format(text1)
-            if num==0:
+            if num==0 : 
                 try:
-                    result_df=TestSample().LDA_results(enzyme_string)
-                    #print ("result_df",result_df)
-                    result_dict=TestSample().convert_df_to_jsdict(result_df)
-                    result_list=TestSample().dict_to_JSlist(result_dict)
+                    result_class,result_prob=RunServerClassifier().run_classifier(enzyme_string)
                     Template_Dict={}
-                    Template_Dict['results_table']=result_list
-                    #print (result_list)
-                    write_html(Template_Dict,"LDAResult_temp.html","LDAResults.html")
-                    return redirect(url_for('LDAResult'))
+                    Template_Dict['result_class']=result_class
+                    Template_Dict['result_prob']=result_prob
+                    write_html(Template_Dict,"Classification_temp.html","Classification_Results.html")
+                    print ("written template")
+                    return redirect(url_for('Classification_Results'))
                 except:
                     return "<h1>Unexpected error, please email ganesans@salilab.org for help.</h1>"
-        else:
-            return "<h1>Please enter enzyme list to proceed.</h1>"
 
     return render_template("Classification.html")
 
-@app.route("/Check/", methods=['GET','POST'])
-def Check():
-    if request.method=='POST':
-        enzyme_string=request.form['list']
-        if enzyme_string:
-            num,text1=TestSample().Check_format(enzyme_string)
-            if num==1:
-                return "<h1>{}</h1>".format(text1)
-            if num==0:
-                result=TestSample().Check_In_DB(enzyme_string)
-                Template_Dict={}
-                Template_Dict['result']=result
-                write_html(Template_Dict,"CheckResult_temp.html","CheckResults.html")
-                return redirect(url_for('Result'))
-            else:
-                return "<h1>Please enter valid enzyme list to proceed.</h1>"
-        else:
-            return "<h1>Please enter enzyme list to proceed.</h1>"
-    return render_template("Check.html")
+@app.route("/Classification_Results/")
+def Classification_Results():
+    return render_template("Classification_Results.html")
 
+@app.route("/Similarity_Results/")
+def Similarity_Results():
+    return render_template("Similarity_Results.html")
 
 @app.route('/form/', methods=['GET', 'POST'])
 def form():

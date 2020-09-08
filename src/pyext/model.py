@@ -36,6 +36,8 @@ from sklearn.base import BaseEstimator,ClassifierMixin
 from sklearn.externals import joblib
 from sklearn.metrics import average_precision_score,roc_auc_score
 
+import warnings
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 class EnsembleClassifier(BaseEstimator, ClassifierMixin):
 	'''
@@ -66,8 +68,9 @@ class PathwayClassifier(object):
 
 	'''
 	def __init__(self):
-		self.path='../../data/'
 		self.models='../../data/models/'
+		self.path='../../data/'
+		#self.models='../../data/models/'
 		self.fig='../../data/images/'
 		self.results='../../data/results/'
 		self.categories=['Detoxification','Activation',
@@ -477,7 +480,7 @@ class PathwaySimilarity(object):
 		self.fname='df_metacyc_multilabel_1.pkl'
 		self.kegg='df_kegg.pkl'
 		self.model_name='model5-10-100.model'
-		self.models='../../data/models/'
+                self.models='../../data/models/'
 		self.model=FT_gensim.load(self.models+'model5-10-100.model')
 
 	def convert_text(self,Name):
@@ -534,54 +537,52 @@ class PathwaySimilarity(object):
 												  columns=['Pathway_test','Pathway_train','Pathway_name','Similarity','Percentage']))
 		return df_sim
 
-	def get_ranking_single(self,valid,metacyc=True,kegg=False,combined=False):
+	def get_ranking_single(self,valid,metacyc=True,kegg=True,combined=False):
 		if combined:
 			data,data_dict,data_dict_name=self.similarity_dict()
-		df_sim=pd.DataFrame(columns=['Pathway_test','Pathway_train','Similarity'])
-		for k,l in enumerate(data):
-			sim=self.model.wv.n_similarity(valid, data[k])
-			pathway=list(data_dict.keys())[k]
-			pathway_name=data_dict_name[list(data_dict.keys())[k]]
-			perc=round(sim*100,2)
-			if sim>0:
-				lst=[['UNK',list(data_dict.keys())[k],pathway_name,sim,perc]]
-				df_sim=df_sim.append(pd.DataFrame(lst,columns=['Pathway_test','Pathway_train','Pathway_name','Similarity','Percentage']))
+			df_sim=pd.DataFrame(columns=['Pathway_test','Pathway_train','Similarity'])
+			for k,l in enumerate(data):
+				sim=self.model.wv.n_similarity(valid, data[k])
+				pathway=list(data_dict.keys())[k]
+				pathway_name=data_dict_name[list(data_dict.keys())[k]]
+				perc=round(sim*100,2)
+				if sim>0:
+					lst=[['UNK',list(data_dict.keys())[k],pathway_name,sim,perc]]
+					df_sim=df_sim.append(pd.DataFrame(lst,columns=['Pathway_test','Pathway_train','Pathway_name','Similarity','Percentage']))
 		if not combined:
 			df_sim=pd.DataFrame() 
 		
 		if metacyc:
 			data,data_dict,data_dict_name=self.similarity_dict_metacyc()
-		df_simM=pd.DataFrame(columns=['Pathway_test','Pathway_train','Similarity'])
-		for k,l in enumerate(data):
-			sim=self.model.wv.n_similarity(valid, data[k])
-			pathway=list(data_dict.keys())[k]
-			pathway_name=data_dict_name[list(data_dict.keys())[k]]
+			df_simM=pd.DataFrame(columns=['Pathway_test','Pathway_train','Similarity'])
+			for k,l in enumerate(data):
+				sim=self.model.wv.n_similarity(valid, data[k])
+				pathway=list(data_dict.keys())[k]
+				pathway_name=data_dict_name[list(data_dict.keys())[k]]
 				#jaccard=len(list(set(j).intersection(l)))/len(list(set(j).union(l)))
-			perc=round(sim*100,2)
-			if sim>0:
-				lst=[['UNK',list(data_dict.keys())[k],pathway_name,sim,perc]]
-				df_simM=df_simM.append(pd.DataFrame(lst,columns=['Pathway_test','Pathway_train','Pathway_name','Similarity','Percentage']))
+				perc=round(sim*100,2)
+				if sim>0:
+					lst=[['UNK',list(data_dict.keys())[k],pathway_name,sim,perc]]
+					df_simM=df_simM.append(pd.DataFrame(lst,columns=['Pathway_test','Pathway_train','Pathway_name','Similarity','Percentage']))
 		if not metacyc:
 			df_simM=pd.DataFrame() 
 
 		if kegg:
 			data,data_dict,data_dict_name=self.similarity_dict_kegg()
-		df_simK=pd.DataFrame(columns=['Pathway_test','Pathway_train','Similarity'])
-		for k,l in enumerate(data):
-			sim=self.model.wv.n_similarity(valid, data[k])
-			pathway=list(data_dict.keys())[k]
-			pathway_name=data_dict_name[list(data_dict.keys())[k]]
+			df_simK=pd.DataFrame(columns=['Pathway_test','Pathway_train','Similarity'])
+			for k,l in enumerate(data):
+				sim=self.model.wv.n_similarity(valid, data[k])
+				pathway=list(data_dict.keys())[k]
+				pathway_name=data_dict_name[list(data_dict.keys())[k]]
 				#jaccard=len(list(set(j).intersection(l)))/len(list(set(j).union(l)))
-			perc=round(sim*100,2)
-			if sim>0:
-				lst=[['UNK',list(data_dict.keys())[k],pathway_name,sim,perc]]
-				df_simK=df_simK.append(pd.DataFrame(lst,columns=['Pathway_test','Pathway_train','Pathway_name','Similarity','Percentage']))
-		if not kegg:
-			df_simK=pd.DataFrame() 
+				perc=round(sim*100,2)
+				if sim>0:
+					lst=[['UNK',list(data_dict.keys())[k],pathway_name,sim,perc]]
+					df_simK=df_simK.append(pd.DataFrame(lst,columns=['Pathway_test','Pathway_train','Pathway_name','Similarity','Percentage']))
+			if not kegg:
+				df_simK=pd.DataFrame() 
 		
-		df_sim=df_sim.sort_values(by=['Similarity'])
-
-		return df_simM.sort_values(by=['Similarity']),df_simK.sort_values(by=['Similarity']),df_sim.sort_values(by=['Similarity'])
+		return df_simM,df_simK,df_sim
 
 
 

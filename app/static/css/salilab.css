@@ -37,7 +37,7 @@ b,strong {
    color:               #003366;
 }
 p, br,  ul, ol, li, dl, dd, dt, center, blockquote {
-   font-size:           13px;
+   font-size:           15px;
    font-family:         "Arial", "Helvetica", Sans-serif;
    color:               #003366;
 }
@@ -77,6 +77,7 @@ h2 {
    margin-top: -20px;
    margin-bottom: 0;
    color: #E2A361;
+   text-align: center;
 }
 
 h3 {
@@ -208,12 +209,24 @@ h5 {
         z-index: 6;
         color: #DDFFEE;
 }
+#navigation_labb {
+        position:relative;
+        top: 0;
+        background-color: #596E98;
+        font-size: 1.1em;
+        text-align: center;
+        padding: 20px;
+        z-index: 6;
+        color: #DDFFEE;
+}
+
 #navigation_lab ul{list-style-type:none}
 #navigation_lab a {
         color: #EEEEEE;
         background-color: inherit;
         font-weight: bold;
 }
+
 #bodypart {
         width: 450px;
         height: auto;
@@ -360,6 +373,22 @@ h5 {
 .light {
         color: grey;
 }
+
+.vertical-center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+.button {
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+
 
 @media only screen and (max-device-width: 970px) {
   html {

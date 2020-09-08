@@ -1,5 +1,16 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function(){
+  $("#hide").click(function(){
+    $("p").hide();
+  });
+  $("#navigation_labb").click(function(){
+    $("p.lead").append("Please wait 2-3min for results to be calculated......");
+  });
+});
+</script>
 
 <head>
     <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
@@ -48,38 +59,39 @@
         <div id="navigation_second">
             <a href="https://modbase.compbio.ucsf.edu/account/">ModBase Login</a>
             &nbsp;&nbsp;&nbsp;
-            <a href="/foxsdock/">Web Server</a>
+            <a href="/form/">Web Server</a>
             &nbsp;&nbsp;&nbsp;
             <a href="/about">About SimPathFinder</a>
             &nbsp;&nbsp;&nbsp;
-            <a href="/help">Help</a>
-            &nbsp;&nbsp;&nbsp;
         </div>
     </div>
     </div>
     </div>
-
-	 </div>
-      </header>
-      <div class="container">
-         <div class="card border" style="border-color: solid black; margin-top:20px">
+    </div>
+    </header>
+    <div class="container">
+        <div class="card border" style="border-color: solid black; margin-top:20px">
             <div class="card-body" style="background-color: white; height: 60rem;">
-               <h3 class="font-weight-light" align='center'>Pathway Ontology</h3>
-               <form action=""  method="POST">
-                  <div class="form-group">
-                     <label for="exampleInputName1">Enter list of enzymes</label>
-                     <input type="text" class="form-control" id="exampleInputName1" placeholder="list" name="list" value="{{request.form.list}}">
-                     <small id="Help" class="form-text text-muted">The enzyme list should be comma separated, eg: 'ec:1.2.3.4,ec:2.3.4.44,ec:3.1.23.1' </small>
-                  </div>
-                  <input type="submit" class="btn btn-primary" id='navigation_labb' value="Get pathway ontology">
-               </form>
+                <h3 class="font-weight-light" align='center'>Pathway Ontology</h3>
+                <form action="" method="POST">
+                    <div class="form-group">
+                        <label for="exampleInputName1">Enter list of enzymes</label>
+                        <input type="text" class="form-control" id="exampleInputName1" placeholder="list" name="list" value="{{request.form.list}}">
+                        <small id="Help" class="form-text text-muted">The enzyme list should be comma separated, eg: 'ec:1.2.3.4,ec:2.3.4.44,ec:3.1.23.1' </small>
+                    </div>
+                    <input type="submit" class="btn btn-primary" id='navigation_labb' value="Get pathway ontology">
+                </form>
+                <p style="margin-bottom:1cm" ;> </p>
+                <p class="lead"> </p>
             </div>
-         </div>
-      </div>
-   </body>
-<footer>
-<div class="container-fluid">
-  <p class="logo1" align='center' class='text-center' style="border: none; margin-bottom: 0px; margin-right: 0px; margin-left: 0px;">&copy; Copyright 2020, Sai J. Ganesan (ganesans@salilab.org)</p>
         </div>
+    </div>
+</body>
+<footer>
+   <hr size="2" width="80%">
+    <div class="address">
+        <p class="logo1" align='center' class='text-center' style="border: none; margin-bottom: 5px; margin-top: 5px; margin-right: 0px; margin-left: 0px;">Contact: <a href="ganesans@salilab.org">ganesans@salilab.org</a></p>
+    </div>
 </footer>
+
 </html>

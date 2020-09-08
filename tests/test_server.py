@@ -38,8 +38,16 @@ class Testing(unittest.TestCase):
 		self.assertEqual(0,out[0])
 		out=R.Check_format('ec:1.1')
 		self.assertEqual(0,out[0])
-
-
+		out=R.Check_format('ec:8.1')
+		self.assertEqual(1,out[0])
+		out=R.Check_format('ec:1.42.1.7')
+		self.assertEqual(0,out[0])
+		out=R.Check_format('ec:1.2.3.4,ec:2.3.4.44,ec:3.1.23.1')
+		self.assertEqual(0,out[0])
+		out=R.Check_format('JR:1')
+		self.assertEqual(1,out[0])
+		out=R.Check_format('JR..')
+		self.assertEqual(1,out[0])
 
 
 if __name__ == '__main__':
