@@ -35,7 +35,7 @@
 
 ## Test site 
 
-- [`test web page`](https://modbase.compbio.ucsf.edu/SimPathFinder/) 
+- [`Test application`](https://modbase.compbio.ucsf.edu/SimPathFinder/) 
 
 ## Information
 
