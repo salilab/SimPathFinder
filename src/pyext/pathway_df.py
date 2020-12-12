@@ -264,10 +264,10 @@ class PathwayDF(object):
 		create pathway df obj and pathway class df objects 
 		'''
 		lst=list()
- 		all_dfs=[df[2] for df in os.walk(self.path+output_dir)]
-    	for df in all_dfs:
-        	pwy_df=pickle.load(open(self.path+output_dir+i,'rb'))
-        	lst.append(df)
-        final_df=pd.concat(lst)
+		all_dfs=[df[2] for df in os.walk(self.path+output_dir)]
+		for df in all_dfs[0]:
+			pwy_df=pickle.load(open(self.path+output_dir+'/'+df,'rb'))
+			lst.append(pwy_df)
+		final_df=pd.concat(lst)
 		pickle.dump(final_df, open(self.path+output_dir+"/final.pkl", "wb" ) )
 
