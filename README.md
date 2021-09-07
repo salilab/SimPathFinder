@@ -39,6 +39,8 @@
 
 ## Information
 
-_Author(s)_: Sai J. Ganesan
+_Paper_: Predicting ontology of enzymatic pathways by transfer learning
+_Author(s)_: Sai J. Ganesan, Andrej Sali
+_Citation_: TBD
 
 
