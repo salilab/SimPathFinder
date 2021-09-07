@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Flask Parent Template</title>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/salilab.css') }}">
+    
+</head>
+<script type="text/javascript">
+                function Write_Table(list_to_write){
+                var mytable = "<div class='bs-example' class='text-center'> <table class='table table-bordered' style='border-color':#003366;> <thead> <tr>";
+                for (var i = 0; i < list_to_write[0].length; i++) {
+                mytable += "<th align='center' class='text-center'>" + list_to_write[0][i] + "</th>";
+                }
+                mytable += "</tr></thead><tr>";
+                
+                for (var j=1;j<list_to_write.length;j++) {
+                for (var i=0; i<list_to_write[j].length; i++) {
+                mytable += "<td><div>" + list_to_write[j][i] + "</div></td>";
+                }
+                mytable += "</tr><tr>";
+                
+                }
+                mytable += "</tr></table></div>";
+                document.write(mytable);
+                }
+</script>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="card border" style="border-color: solid black; margin-top:20px">
+                <div class="card-body" style="background-color: white; height: 10rem;">
+                    <div id="header1">
+                        
+                        <h1 class="logo" align='center' class='text-center' style="border: none; margin-top: 2px; margin-right: 2px; margin-left: 2px;"><a href={{ url_for('home') }}> SimPathFinder </a></h1>
+                        
+                    </div>
+                    <div id="header1">
+                        <h3 class="logo" align='center' class='text-center' style="border: none; margin-top: 2px; margin-right: 2px; margin-left: 2px;"> Find pathway ontology and other similar pathways in KEGG and MetaCyc</h3>
+                    </div>
+    </header>
+    <div class="container">
+        <div id="navigation_lab">
+            <a href="//salilab.org/">Sali Lab Home</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/modweb/">ModWeb</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/modbase/">ModBase</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/evaluation/">ModEval</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/peptide/">PCSS</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/foxs/">FoXS</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//integrativemodeling.org/">IMP</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/multifit/">MultiFit</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/modpipe/">ModPipe</a>
+            &nbsp;&nbsp;&nbsp;
+        </div>
+    </div>
+    <div class="container">
+        <div id="navigation_second">
+            <a href="https://modbase.compbio.ucsf.edu/account/">ModBase Login</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="/foxsdock/">Web Server</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="/about">About SimPathFinder</a>
+            &nbsp;&nbsp;&nbsp;
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </header>
+    </div>
+    </header>
+    <div class="container">
+        <div class="card border" style="border-color: solid black; margin-top:20px">
+            <div class="card-body" style="background-color: white; height: 60rem;">
+                <h3 class="font-weight-light" align='center'>Pathway Ontology: Results</h3>
+                <p class="lead">The results of the pathway ontology analysis are as follows:</p>
+                <div class="container">
+                    <div class="card border" style="border-color: solid black; margin-top:20px;margin-bottom:20px;">
+                        <div class="card-body" style="background-color:#D3D3D3; height: 25rem;">
+                        <p class="lead">Top five pathways from MetaCyc</p>
+                        <script type="text/javascript">
+                        var input_list=[['Pathway', 'Percentage Similarity(%)', 'Pathway Link'], ['PWY-5677', 88.32, 'https://biocyc.org/META/new-image?object=PWY-5677'], ['PWY-6695', 86.34, 'https://biocyc.org/META/new-image?object=PWY-6695'], ['PWY-5022', 84.6, 'https://biocyc.org/META/new-image?object=PWY-5022'], ['ACETOACETATE-DEG-PWY', 83.69, 'https://biocyc.org/META/new-image?object=ACETOACETATE-DEG-PWY'], ['PWY-7891', 82.49, 'https://biocyc.org/META/new-image?object=PWY-7891']];    
+                        Write_Table(list_to_write=input_list)
+                        </script>
+                        </div>
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="card border" style="border-color: solid black; margin-top:20px;margin-bottom:20px;">
+                        <div class="card-body" style="background-color:#D3D3D3; height: 25rem;">
+                        <p class="lead">Top five pathways from KEGG</p>
+                        <script type="text/javascript">
+                        var input_list=[['Pathway', 'Percentage Similarity(%)', 'Pathway Link'], ['map00280', 61.22, 'https://www.genome.jp/dbget-bin/www_bget?map00280'], ['map00920', 56.42, 'https://www.genome.jp/dbget-bin/www_bget?map00920'], ['map00072', 55.92, 'https://www.genome.jp/dbget-bin/www_bget?map00072'], ['map00650', 51.87, 'https://www.genome.jp/dbget-bin/www_bget?map00650'], ['map00430', 50.82, 'https://www.genome.jp/dbget-bin/www_bget?map00430']];    
+                        Write_Table(list_to_write=input_list)
+                        </script>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+<footer>
+   <hr size="2" width="80%">
+    <div class="address">
+        <p class="logo1" align='center' class='text-center' style="border: none; margin-bottom: 5px; margin-top: 5px; margin-right: 0px; margin-left: 0px;">Contact: <a href="ganesans@salilab.org">ganesans@salilab.org</a></p>
+    </div>
+</footer>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Flask Parent Template</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/salilab.css') }}">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="card border" style="border-color: solid black; margin-top:20px">
+                <div class="card-body" style="background-color: white; height: 10rem;">
+                    <div id="header1">
+                        <h1 class="logo" align='center' class='text-center' style="border: none; margin-top: 2px; margin-right: 2px; margin-left: 2px;"><a href={{ url_for('home') }}> SimPathFinder </a></h1>
+                    </div>
+                    <div id="header1">
+                        <h3 class="logo" align='center' class='text-center' style="border: none; margin-top: 2px; margin-right: 2px; margin-left: 2px;"> Find pathway ontology and other similar pathways in KEGG and MetaCyc</h3>
+                    </div>
+    </header>
+    <div class="container">
+        <div id="navigation_lab">
+            <a href="//salilab.org/">Sali Lab Home</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/modweb/">ModWeb</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/modbase/">ModBase</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/evaluation/">ModEval</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/peptide/">PCSS</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/foxs/">FoXS</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//integrativemodeling.org/">IMP</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/multifit/">MultiFit</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/modpipe/">ModPipe</a>
+            &nbsp;&nbsp;&nbsp;
+        </div>
+    </div>
+    <div class="container">
+        <div id="navigation_second">
+            <a href="https://modbase.compbio.ucsf.edu/account/">ModBase Login</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="/foxsdock/">Web Server</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="/about">About SimPathFinder</a>
+            &nbsp;&nbsp;&nbsp;
+        </div>
+    </div>
+    </div>
+    </div>
+
+
+      <div class="container">
+         <div class="card border" style="border-color: solid black; margin-top:20px">
+            <div class="card-body" style="background-color: white; height: 60rem;">
+               <h3 class="font-weight-light" align='center'>User form</h3>
+               <form action=""  method="POST">
+                  <div class="form-group">
+                     <label for="exampleInputName1">Name</label>
+                     <input type="text" class="form-control" id="exampleInputName1" placeholder="Name" name="Name" value="{{request.form.name}}">
+                  </div>
+                  <div class="form-group">
+                     <label for="exampleInputEmail1">Email address</label>
+                     <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Email" name="Email" value="{{request.form.email}}">
+                     <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+                  </div>
+                  <input type="submit" class="btn btn-primary" id='navigation_lab'  value="Login">
+               </form>
+            </div>
+         </div>
+      </div>
+   </body>
+<footer>
+   <hr size="2" width="80%">
+    <div class="address">
+        <p class="logo1" align='center' class='text-center' style="border: none; margin-bottom: 5px; margin-top: 5px; margin-right: 0px; margin-left: 0px;">Contact: <a href="ganesans@salilab.org">ganesans@salilab.org</a></p>
+    </div>
+</footer>
+</html>
