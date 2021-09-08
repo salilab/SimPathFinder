@@ -274,16 +274,3 @@ class PathwayScrapper(object):
 				if i !=m:
 					print (i,m,len(list(set(j).intersection(set(n)))))
 
-if __name__=='__main__':
-	key='Biosynthesis'
-	link='https://biocyc.org/META/NEW-IMAGE?object='
-	path='../../data/'
-	p_new={};e_new={};p_new[key]=[];e_new[key]=[]
-	biosyn=PathwayScrapper().get_pflinks_biosynthesis(link,key,key,p_new,e_new)
-	print ("biosy",len(list(set(biosyn['Biosynthesis']))))
-	key='Energy-Metabolism';p_new[key]=[];e_new[key]=[]
-	ener=PathwayScrapper().get_pflinks_energy(link,key,key,p_new,e_new)
-	print (len(list(set(ener['Energy-Metabolism']))))
-	all_dicts=[biosyn,ener]
-	combined_dict=PathwayScrapper().combine_classes(all_dicts)
-	pickle.dump(combined_dict, open(path+ "test.pkl", "wb" ) )
