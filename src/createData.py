@@ -1,6 +1,6 @@
 from __init__ import ExtractUnlabeledData, SampleUnlabeledData, ExtractLabeledData
 
-E=ExtractLabeledData(data_dir='../labeldata/')
+E = ExtractLabeledData(data_dir='../labeldata/')
 E.get_pathways()
 E.get_pathway_names()
 E.get_classes_dict()

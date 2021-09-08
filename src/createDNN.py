@@ -1,6 +1,6 @@
 from dnn import *
 
-D=DNNModel()
+D = DNNModel()
 D.cleanTextChar()
 D.createEmbMatrix()
 D.runParameterizeModel()
