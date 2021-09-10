@@ -221,7 +221,7 @@ class BuildClassicalModel(ModelVectors):
         print(grid_search.best_params_)
         return grid_search.best_params_
 
-    def saveModel(self,name='RMmodel.pkl'):
+    def saveModel(self, name='RMmodel.pkl'):
         self.fitRM()
         # modelPkl = pickle.dumps(self.RMmodel)
         with open(self.model_dir+name, 'wb') as f:
