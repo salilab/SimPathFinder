@@ -43,8 +43,8 @@ class ModelVectors(object):
         self.testLSTM = pickle.load(
             open(self.data_dir + 'TestLabeledDataLSTM.pkl', "rb"))
 
-    def fetchModel(self, modelName='tierT12_10_300'):
-        self.model = FT_gensim.load(self.model_dir + modelName+'.model')
+    def fetchModel(self):
+        self.model = FT_gensim.load(self.model_dir + self.modelName+'.model')
         return self.model
 
     def pwyVector(self, pwy):
@@ -221,10 +221,10 @@ class BuildClassicalModel(ModelVectors):
         print(grid_search.best_params_)
         return grid_search.best_params_
 
-    def saveModel(self):
+    def saveModel(self,name='RMmodel.pkl'):
         self.fitRM()
         # modelPkl = pickle.dumps(self.RMmodel)
-        with open(self.model_dir+'RMmodel.pkl', 'wb') as f:
+        with open(self.model_dir+name, 'wb') as f:
             pickle.dump(self.RMmodel, f)
 
 
