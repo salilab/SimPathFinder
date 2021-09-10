@@ -25,11 +25,11 @@ from sklearn.metrics import *
 
 class Metrics(object):
     def __init__(self, data_dir='labeldata/',
-                 model_dir='models/',
+                 model_dir_emb='models/',
                  final_model='RMmodel.pkl', *args, **kwargs):
         super(Metrics, self).__init__(*args, **kwargs)
         self.data_dir = data_dir
-        self.model_dir = model_dir
+        self.model_dir_emb = model_dir_emb
         self.final_model = pickle.load(
             open(self.model_dir + final_model, "rb"))
 
