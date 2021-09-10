@@ -78,6 +78,23 @@ class ParameterizeEmbedding(CreateEmbedding):
                                                     'ec:6 sim', 'ec:6 mm'])
         return parameters
 
+    def parameterize_FT_complete(self, epochs=[2,3,4,5,10], size=300,w=[1,3,5,10],n=[1,3,5,10,15,20,25]):
+        combined_list = epochs,w,n
+        parameters=list(itertools.product(*combined_list))
+        lst=[]
+        for i,j in enumerate(parameters):
+            model=self.FT_sg(epoch=j[0],size=300,window=j[1],min_n=j[2])
+            model.save("tierT12_"+str(j[0])+"_"+
+                              str(j[1])+"_"+str(j[2])+"_"+str(size)+".model")
+
+            count,mm=self.measure_results_all(model=model)
+            lst.append([j[0],j[1],j[2],count[0],mm[0],count[1],mm[1],count[2],mm[2],count[3],\
+                    mm[3],count[4],mm[4],count[5],mm[5]])
+            parameters=pd.DataFrame(lst,columns=['epoch','window','min_n','ec:1 sim','ec:1 mm',\
+                          'ec:2 sim','ec:2 mm','ec:3 sim','ec:3 mm','ec:4 sim','ec:4 mm','ec:5 sim','ec:5 mm',
+                           'ec:6 sim','ec:6 mm'])
+        return parameters
+
 
 class ClusterEmbedding(CreateEmbedding):
     def __init__(self):
