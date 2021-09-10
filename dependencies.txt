@@ -3,11 +3,12 @@ numpy==1.19.2
 flask==1.1.2
 matplotlib==3.3.4
 scipy==1.6.2
-sklearn==0.24.1
-bs4==4.9.3
-umap==0.5.1
+scikit-learn==0.23.2
+beautifulsoup4==4.9.3
+umap-learn==0.5.1
 seaborn==0.11.1
 gensim==3.8.0
 keras==2.3.1
-tensorflow==2.0.0
-kerastuner==1.0.1
+tensorflow==2.2.0
+keras-tuner==1.0.4
+wheel==0.36.2
