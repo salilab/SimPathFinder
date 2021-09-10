@@ -8,3 +8,6 @@ bs4==4.9.3
 umap==0.5.1
 seaborn==0.11.1
 gensim==3.8.0
+keras==2.3.1
+tensorflow==2.0.0
+kerastuner==1.0.1
