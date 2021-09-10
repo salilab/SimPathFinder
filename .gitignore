@@ -3,3 +3,5 @@
 *.bak
 *.old
 *.ipynb
+.DS_Store
+EDA/*
