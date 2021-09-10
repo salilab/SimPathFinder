@@ -17,7 +17,7 @@ import seaborn as sns
 
 class ModelVectors(object):
     def __init__(self, data_dir='../labeldata/',
-                 model_dir='../models/',
+                 model_dir_emb='../models/',
                  categories=['Detoxification',
                              'Activation',
                                 'Biosynthesis',
@@ -28,7 +28,7 @@ class ModelVectors(object):
                  modelName='tierT12_10_300'):
         super(ModelVectors, self).__init__()
         self.data_dir = data_dir
-        self.model_dir = model_dir
+        self.model_dir_emb = model_dir_emb
         self.categories = categories
         self.modelName = modelName
         self.train = pickle.load(
