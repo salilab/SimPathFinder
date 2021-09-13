@@ -26,14 +26,14 @@ from models import ModelVectors
 class DNNModel(ModelVectors):
     def __init__(self):
         super().__init__(data_dir='labeldata/',
-                                       model_dir='models/',
-                                       categories=['Detoxification',
-                                                   'Activation',
-                                                   'Biosynthesis',
-                                                   'Degradation',
-                                                   'Energy',
-                                                   'Glycan',
-                                                   'Macromolecule'])
+                         model_dir='models/',
+                         categories=['Detoxification',
+                                     'Activation',
+                                     'Biosynthesis',
+                                     'Degradation',
+                                     'Energy',
+                                     'Glycan',
+                                     'Macromolecule'])
         self.fetchModel()
         self.X_train = self.trainLSTM.EC.to_list()
         self.X_test = self.testLSTM.EC.to_list()
