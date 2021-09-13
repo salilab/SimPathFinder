@@ -11,8 +11,11 @@ class ExtractUnlabeledData(object):
 
     def __init__(self, data_dir='../'):
         self.data_dir = data_dir
+        # this data_dir refers to path to directories of different organisms
+        # or biocyc Tier 1 and 2 organisms
+        # pass local_dir to extract info
 
-    def getPwyDictClean(self, local_dir, file='pathway-links.dat'):
+    def getPwyDictClean(self, local_dir: str, file='pathway-links.dat') -> dict:
         self.pathway_names = {}
         sf = open(local_dir+file, encoding="utf8", errors='ignore')
         for i in sf.readlines():
@@ -21,7 +24,7 @@ class ExtractUnlabeledData(object):
                 self.pathway_names[lines[0]] = ' '.join(lines[1:])
         return self.pathway_names
 
-    def getPwyDictRaw(self, local_dir, file='pathways.dat'):
+    def getPwyDictRaw(self, local_dir: str, file='pathways.dat') -> dict:
         self.pathway_names = {}
         sf = open(local_dir+file, encoding="utf8", errors='ignore')
         for i in sf.readlines():
@@ -32,7 +35,7 @@ class ExtractUnlabeledData(object):
                 self.pathway_names[temp] = ' '.join(line[2:])
         return self.pathway_names
 
-    def getRxnDictClean(self, local_dir, file='reaction-links.dat'):
+    def getRxnDictClean(self, local_dir: str, file='reaction-links.dat') -> dict:
         self.rxn_ec = {}
         sf = open(local_dir+file, encoding="utf8", errors='ignore')
         for i in sf.readlines():
@@ -42,7 +45,7 @@ class ExtractUnlabeledData(object):
                     ' '.join(lines[1:])).lower().replace('-', ':')
         return self.rxn_ec
 
-    def getRxnDictRaw(self, local_dir, file='reactions.dat'):
+    def getRxnDictRaw(self, local_dir: str, file='reactions.dat') -> dict:
         self.rxn_ec = {}
         sf = open(local_dir+file, encoding="utf8", errors='ignore')
         for i in sf.readlines():
@@ -53,7 +56,7 @@ class ExtractUnlabeledData(object):
                 self.rxn_ec[temp_rxn] = str(line[2]).lower().replace('-', ':')
         return self.rxn_ec
 
-    def getPwyRxnMap(self, local_dir, file='pathways.dat'):
+    def getPwyRxnMap(self, local_dir: str, file='pathways.dat') -> dict:
         self.pathway_rxn = {}
         sf = open(local_dir+file, encoding='utf-8', errors='ignore')
         for i, j in enumerate(sf.readlines()):
@@ -65,7 +68,7 @@ class ExtractUnlabeledData(object):
                 self.pathway_rxn[temp_id].append(lines[2])
         return self.pathway_rxn
 
-    def getPwyRxnPredMap(self, local_dir, file='pathways.dat'):
+    def getPwyRxnPredMap(self, local_dir: str, file='pathways.dat') -> dict:
         self.pathway_pred_rxn = {}
         sf = open(local_dir+file, encoding='utf-8', errors='ignore')
         for i, j in enumerate(sf.readlines()):
@@ -88,7 +91,7 @@ class ExtractUnlabeledData(object):
                 self.pathway_pred_rxn[temp_id].append(lines[2])
         return self.pathway_pred_rxn
 
-    def globalRxnECMap(self):
+    def globalRxnECMap(self) -> dict:
         alld = [x[0]+'/' for x in os.walk(self.data_dir)]
         self.rxn_ec_global = dict()
         for i in alld[1:]:
@@ -104,7 +107,7 @@ class ExtractUnlabeledData(object):
                         pass
         return self.rxn_ec_global
 
-    def globalPwyRxnMap(self):
+    def globalPwyRxnMap(self) -> pd.DataFrame:
         alld = [x[0]+'/' for x in os.walk(self.data_dir)]
         pwy_rxn_global = []
         # ecrxnmap = self.globalRxnECMap()
@@ -117,7 +120,7 @@ class ExtractUnlabeledData(object):
         self.pwy_rxn_all = pd.concat(pwy_rxn_global)
         return self.pwy_rxn_all
 
-    def globalPwyRxnEnzDF(self):
+    def globalPwyRxnEnzDF(self) -> pd.DataFrame:
         # self.pwy_rxn_all=self.globalPwyRxnMap()
         # print (vars(self).keys())
         self.pwy_rxn_all = self.pwy_rxn_all.rename(
@@ -132,7 +135,7 @@ class ExtractUnlabeledData(object):
         self.pwy_rxn_all['EC'] = self.pwy_rxn_all['RXN'].apply(mapRxntoEC)
         return self.pwy_rxn_all
 
-    def finalEC(self):
+    def finalEC(self) -> list:
         EC_all = self.pwy_rxn_all['EC'].to_list()
         self.EC_clean = []
         for each in EC_all:
@@ -153,7 +156,7 @@ class SampleUnlabeledData(ExtractUnlabeledData):
     def __init__(self):
         super().__init__(data_dir='../')
 
-    def generateSamples(self, sample_nos=1000):
+    def generateSamples(self, sample_nos=1000) -> list:
         Enz = ExtractUnlabeledData()
         # rxnEcMap = Enz.globalRxnECMap()
         # pwyRxnMap = Enz.globalPwyRxnMap()
@@ -203,7 +206,7 @@ class ExtractLabeledData(object):
         self.Mac = self.get_classes_dict_labels(
             'Macromolecule-Modification', classes)
 
-    def get_classes_dict_labels(self, label, classes):
+    def get_classes_dict_labels(self, label: str, classes) -> dict:
         label_tags = {}
         label_list = classes[label]
         for _, pwy in enumerate(list(set(self.pwyNames.keys()))):
@@ -213,7 +216,7 @@ class ExtractLabeledData(object):
                 label_tags[pwy] = 0
         return label_tags
 
-    def create_df_all_labels(self):
+    def create_df_all_labels(self) -> df:
         lst = []
         for key, val in self.Act.items():
             if key in list(self.pwy.keys()) and len(self.pwy[key]) > 2:
@@ -236,7 +239,7 @@ class BalanceLabelData(object):
     def __init__(self, data_dir='../labeldata/'):
         self.data_dir = data_dir
 
-    def loadAllData(self, file='LabeledData.pkl'):
+    def loadAllData(self, file='LabeledData.pkl') -> dict:
         self.allData = pickle.load(open(self.data_dir + file, "rb"))
         return self.allData
 
@@ -246,7 +249,7 @@ class BalanceLabelData(object):
             temp = self.allData[self.allData[label] == 1]
             print(temp.shape[0], label)
 
-    def applyPartialAnnot(self, pwy, annotLevel=3):
+    def applyPartialAnnot(self, pwy: list, annotLevel=3) -> list:
         output_ec = []
         for ec in pwy:
             temp = ec.split('.')
@@ -274,14 +277,14 @@ class BalanceLabelData(object):
 
         return output_ec
 
-    def createAllPartialAnnot(self):
+    def createAllPartialAnnot(self) -> pd.DataFrame:
         for annotLevel in range(1, 4):
             temp = 'annot'+str(annotLevel)
             self.allData[temp] = self.allData.EC.apply(
                 self.applyPartialAnnot, annotLevel=annotLevel)
         return self.allData
 
-    def splitData(self):
+    def splitData(self) -> (list, list):
         self.train, self.validate = \
             np.split(self.allData.sample(frac=1, random_state=42),
                      [int(.8*len(self.allData))])
