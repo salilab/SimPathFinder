@@ -216,7 +216,7 @@ class ExtractLabeledData(object):
                 label_tags[pwy] = 0
         return label_tags
 
-    def create_df_all_labels(self) -> df:
+    def create_df_all_labels(self) -> pd.DataFrame:
         lst = []
         for key, val in self.Act.items():
             if key in list(self.pwy.keys()) and len(self.pwy[key]) > 2:
