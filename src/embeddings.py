@@ -42,11 +42,11 @@ class ParameterizeEmbedding(CreateEmbedding):
     def __init__(self):
         super().__init__(data_dir='../ecdata/', EC=[])
 
-    def measure_results_all(self, model, keys=['ec:1', 'ec:2', 'ec:3', 'ec:4', 'ec:5', 'ec:6']):
+    def measure_results_all(self, model, keys=['ec:1', 'ec:2', 'ec:3', 'ec:4', 'ec:5', 'ec:6']) -> (int, list):
         count = []
         mm = []
 
-        def measure_results(model, key):
+        def measure_results(model, key: str):
             vals = model.wv.most_similar(key, topn=200)
             count = 0
             min_sim = 1
@@ -64,7 +64,7 @@ class ParameterizeEmbedding(CreateEmbedding):
             mm.append(m)
         return count, mm
 
-    def parameterize_FT(self, epochs=range(5, 60, 10), size=[100, 300]):
+    def parameterize_FT(self, epochs=range(5, 60, 10), size=[100, 300]) -> pd.DataFrame:
         combined_list = epochs, size
         parameters = list(itertools.product(*combined_list))
         lst = []
@@ -78,7 +78,7 @@ class ParameterizeEmbedding(CreateEmbedding):
                                                     'ec:6 sim', 'ec:6 mm'])
         return parameters
 
-    def parameterize_FT_complete(self, epochs=[2, 3, 4, 5, 10], size=300, w=[1, 3, 5, 10], n=[1, 3, 5, 10, 15, 20, 25]):
+    def parameterize_FT_complete(self, epochs=[2, 3, 4, 5, 10], size=300, w=[1, 3, 5, 10], n=[1, 3, 5, 10, 15, 20, 25]) -> pd.DataFrame:
         combined_list = epochs, w, n
         parameters = list(itertools.product(*combined_list))
         lst = []
@@ -100,7 +100,7 @@ class ClusterEmbedding(CreateEmbedding):
     def __init__(self):
         super().__init__(data_dir='../ecdata/', EC=[])
 
-    def get_clusters(self, model, keys=['ec:1', 'ec:2', 'ec:3', 'ec:4', 'ec:5', 'ec:6']):
+    def get_clusters(self, model, keys=['ec:1', 'ec:2', 'ec:3', 'ec:4', 'ec:5', 'ec:6']) -> (list, list):
         embedding_clusters = []
         word_clusters = []
         for word in keys:
@@ -113,7 +113,7 @@ class ClusterEmbedding(CreateEmbedding):
             word_clusters.append(words)
         return word_clusters, embedding_clusters
 
-    def plot_similar_words(self, labels, embedding_clusters, word_clusters):
+    def plot_similar_words(self, labels, embedding_clusters: list, word_clusters: list):
         # fig
         plt.figure(figsize=(7, 5))
         ax = plt.subplot(111)

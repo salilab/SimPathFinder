@@ -97,11 +97,11 @@ class ExtractUnlabeledData(object):
         for i in alld[1:]:
             if i not in ['../pyext/', '../pyext/.ipynb_checkpoints/', '../pyext/data']:
                 try:
-                    temp = self.getRxnDictClean(i)
+                    temp = self.getRxnDictClean(local_dir=i)
                     self.rxn_ec_global.update(temp)
                 except FileNotFoundError:
                     try:
-                        temp = self.getRxnDictRaw(i)
+                        temp = self.getRxnDictRaw(local_dir=i)
                         self.rxn_ec_global.update(temp)
                     except IndexError:
                         pass
@@ -114,7 +114,7 @@ class ExtractUnlabeledData(object):
         for i in alld[1:]:
             if i not in ['../pyext/', '../pyext/.ipynb_checkpoints/', '../pyext/data',
                          '../pyext/ecdata/']:
-                pwyrxn = self.getPwyRxnPredMap(i)
+                pwyrxn = self.getPwyRxnPredMap(local_dir=i)
                 temp = pd.DataFrame(pwyrxn.items())
                 pwy_rxn_global.append(temp)
         self.pwy_rxn_all = pd.concat(pwy_rxn_global)
@@ -292,7 +292,6 @@ class BalanceLabelData(object):
             pickle.dump(self.train, f)
         with open(self.data_dir+'ValidateLabeledData.pkl', 'wb') as f:
             pickle.dump(self.validate, f)
-
         return self.train, self.validate
 
     def splitDataLSTM(self):

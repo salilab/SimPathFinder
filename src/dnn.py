@@ -20,12 +20,12 @@ import kerastuner
 from sklearn.utils import class_weight
 from sklearn.utils.class_weight import compute_class_weight
 from keras import backend as K
-from models import *
+from models import ModelVectors
 
 
 class DNNModel(ModelVectors):
     def __init__(self):
-        super(DNNModel, self).__init__(data_dir='labeldata/',
+        super().__init__(data_dir='labeldata/',
                                        model_dir='models/',
                                        categories=['Detoxification',
                                                    'Activation',

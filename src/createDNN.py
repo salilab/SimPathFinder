@@ -1,4 +1,4 @@
-from dnn import *
+from dnn import DNNModel
 
 D = DNNModel()
 D.cleanTextChar()
