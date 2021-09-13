@@ -26,12 +26,13 @@ from sklearn.metrics import *
 class Metrics(object):
     def __init__(self, data_dir='labeldata/',
                  model_dir_emb='models/',
-                 final_model='RMmodel.pkl', *args, **kwargs):
-        super(Metrics, self).__init__(*args, **kwargs)
+                 final_model_name='RMmodel.pkl', *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self.data_dir = data_dir
         self.model_dir_emb = model_dir_emb
+        self.final_model_name = final_model_name
         self.final_model = pickle.load(
-            open(self.model_dir + final_model, "rb"))
+            open(self.model_dir + self.final_model_name, "rb"))
 
     def rocCurvePlot(self, categories=[], Yvalid_array=[], prediction_prob=[]):
         fig = plt.figure(figsize=(6, 5))
@@ -186,7 +187,7 @@ class Metrics(object):
 
 class EvaluateMetrics(Metrics, ModelVectors):
     def __init__(self, *args, **kwargs):
-        super(EvaluateMetrics, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.X_train, self.Y_train = self.getXYTrain()
         self.X_valid, self.Y_valid = self.getXYValidate()
 
@@ -235,7 +236,7 @@ class EvaluateMetrics(Metrics, ModelVectors):
 
 class EvaluateControl(EvaluateMetrics):
     def __init__(self, *args, **kwargs):
-        super(EvaluateControl, self).__init__(final_model='LRCmodel.pkl')
+        super().__init__(final_model='LRCmodel.pkl')
         self.X_train, self.Y_train, self.X_valid, self.Y_valid = self.getXYControl()
 
 
@@ -261,12 +262,11 @@ class EvaluateAnnot1(EvaluateMetrics):
 
 
 class combinedEvaluations(Metrics, ModelVectors):
-    def __init__(self, final_model_name='RMmodel100.pkl',
+    def __init__(self,
                  control=True,
                  *args, **kwargs):
-        self.final_model_name = final_model_name
         self.control = control
-        super(combinedEvaluations, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.X_valid, self.Y_valid = self.getXYValidate()
         self.Xa1_valid, self.Ya1_valid = self.getXYValidate(tag='annot1')
         self.Xa2_valid, self.Ya2_valid = self.getXYValidate(tag='annot2')
@@ -555,7 +555,7 @@ class MetricsDNN(object):
 
 class EvaluateMetricsDNN(MetricsDNN, ModelVectors):
     def __init__(self, *args, **kwargs):
-        super(EvaluateMetricsDNN, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fetchModel()
         self.X_train = self.trainLSTM.EC.to_list()
         self.X_test = self.testLSTM.EC.to_list()
@@ -640,7 +640,7 @@ class EvaluateMetricsDNN(MetricsDNN, ModelVectors):
 
 class EvaluateMetricsAnnot3DNN(EvaluateMetricsDNN):
     def __init__(self, *args, **kwargs):
-        super(EvaluateMetricsAnnot3DNN, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.Xa3_valid = self.validateLSTM.annot3.to_list()
         self.Xa2_valid = self.validateLSTM.annot2.to_list()
         self.Xa1_valid = self.validateLSTM.annot1.to_list()
