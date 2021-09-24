@@ -5,3 +5,4 @@
 *.ipynb
 .DS_Store
 EDA/*
+models/*

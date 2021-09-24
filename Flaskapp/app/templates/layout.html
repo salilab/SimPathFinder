@@ -62,11 +62,8 @@
             <div class="card border" style="border-color: solid black; margin-top:20px">
                 <div class="card-body" style="background-color: white; height: 16rem;">
                     <h3>Usage</h3>
-                    <p>This application is designed to aid in metabolic pathway discovery. SimPathFinder utilizes all available information on annotated metabolic pathways from <a href='https://metacyc.org/'>MetaCyc</a> and <a href='https://www.genome.jp/kegg/'>KEGG</a> to predict a pathway ontology (or type/class). The required input is a list of partially (<i>i.e.</i> two or three digit enzyme annotations, <i>e.g.</i> EC:1.2 or EC:1.4.3) or fully (<i>i.e.</i> four digit enzyme annotations <i>e.g.</i> EC:1.2.2.3) annotated enzymes. The output pathway annotation can either be (i) a pathway ontology (<i>e.g.</i> glycan pathways), (ii) a list of similar pathways from MetaCyc and KEGG databases, or (iii) both. For more information on the model and the algorithm refer to the <a href={{ url_for('about') }}>about page</a></p>
+                    <p>This application is designed to aid in metabolic pathway discovery. SimPathFinder utilizes all available information on annotated metabolic pathways from <a href='https://metacyc.org/'>MetaCyc</a> and <a href='https://www.genome.jp/kegg/'>KEGG</a> to predict a pathway ontology (or type/class). The required input is a list of partially (<i>i.e.</i> two or three digit enzyme annotations, <i>e.g.</i> EC:1.2 or EC:1.4.3) or fully (<i>i.e.</i> four digit enzyme annotations <i>e.g.</i> EC:1.2.2.3) annotated enzymes. The output pathway annotation can either be (i) a pathway ontology (<i>e.g.</i> glycan pathways), (ii) a list of similar pathways from MetaCyc and KEGG databases, or (iii) both. For more information on the model and the algorithm refer to the publication.</p>
 
-                    <a type="button" align='center' class="btn btn-primary " id="navigation_lab" href={{ url_for('form') }}>
-                        <h3>Login</h3>
-                    </a>
             </div>
             </div>
         </div>
