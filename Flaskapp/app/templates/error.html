@@ -6,39 +6,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
     <title>Flask Parent Template</title>
-    {% raw %}
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/salilab.css') }}">
-    {% endraw %}
 </head>
-<script type="text/javascript">
-                function Write_Table(list_to_write){
-                var mytable = "<div class='bs-example' class='text-center'> <table class='table table-bordered' style='border-color':#003366;> <thead> <tr>";
-                for (var i = 0; i < list_to_write[0].length; i++) {
-                mytable += "<th align='center' class='text-center'>" + list_to_write[0][i] + "</th>";
-                }
-                mytable += "</tr></thead><tr>";
-                
-                for (var j=1;j<list_to_write.length;j++) {
-                for (var i=0; i<list_to_write[j].length; i++) {
-                mytable += "<td><div>" + list_to_write[j][i]+ "</div></td>";
-                }
-                mytable += "</tr><tr>";
-                
-                }
-                mytable += "</tr></table></div>";
-                document.write(mytable);
-                }
-</script>
+
 <body>
     <header>
         <div class="container">
             <div class="card border" style="border-color: solid black; margin-top:20px">
                 <div class="card-body" style="background-color: white; height: 10rem;">
                     <div id="header1">
-                        {% raw %}
                         <h1 class="logo" align='center' class='text-center' style="border: none; margin-top: 2px; margin-right: 2px; margin-left: 2px;"><a href={{ url_for('home') }}> SimPathFinder </a></h1>
-                        {% endraw %}
                     </div>
                     <div id="header1">
                         <h3 class="logo" align='center' class='text-center' style="border: none; margin-top: 2px; margin-right: 2px; margin-left: 2px;"> Find pathway ontology and other similar pathways in KEGG and MetaCyc</h3>
@@ -76,47 +54,23 @@
     </div>
     </div>
     </div>
-    </div>
-    </header>
-    </div>
-    </header>
-    <div class="container">
-        <div class="card border" style="border-color: solid black; margin-top:20px">
-            <div class="card-body" style="background-color: white; height: 60rem;">
-                <h3 class="font-weight-light" align='center'>Pathway Similarity: Results</h3>
-                <p class="lead">Top similar pathways for input list {{enzyme}} is as follows:</p>
-                <div class="container">
-                    <div class="card border" style="border-color: solid black; margin-top:20px;margin-bottom:20px;">
-                        <div class="card-body" style="background-color:#D3D3D3; height: 25rem;">
-                        <p class="lead">Top five pathways from MetaCyc</p>
-                        <script type="text/javascript">
-                        var input_list={{results_table_M}};    
-                        Write_Table(list_to_write=input_list)
-                        </script>
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="card border" style="border-color: solid black; margin-top:20px;margin-bottom:20px;">
-                        <div class="card-body" style="background-color:#D3D3D3; height: 25rem;">
-                        <p class="lead">Top five pathways from KEGG</p>
-                        <script type="text/javascript">
-                        var input_list={{results_table_K}};    
-                        Write_Table(list_to_write=input_list)
-                        </script>
-                        </div>
-                    </div>
-                </div>
 
+    <body>
+        <div class="container">
+            <div class="card border" style="border-color: solid black; margin-top:20px">
+                <div class="card-body" style="background-color: white; height: 35rem;">
+                    <h3>Error</h3>
+                    <p></p>
+                </div>
             </div>
         </div>
-    </div>
-</body>
+    </body>
+
+   </body>
 <footer>
    <hr size="2" width="80%">
     <div class="address">
         <p class="logo1" align='center' class='text-center' style="border: none; margin-bottom: 5px; margin-top: 5px; margin-right: 0px; margin-left: 0px;">Contact: <a href="ganesans@salilab.org">ganesans@salilab.org</a></p>
     </div>
 </footer>
-
 </html>
