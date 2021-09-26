@@ -13,6 +13,7 @@ sys.path.insert(0, "../src/pyext/")
 sys.path.append('../..//models/')
 from run_server import RunServerClassifier
 import warnings
+from datetime import timedelta
 
 
 #############
@@ -34,6 +35,9 @@ def write_html(Template_Dict, template_file,output_file):
 app = Flask(__name__)        
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
+app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=5)
+
+
 Session(app)
 
 @app.context_processor
@@ -178,7 +182,8 @@ def Similarity():
 def Classification():
     if request.method=='POST':
         enzyme_string=request.form['list']
-        session['enzyme_string']=request.form['list']
+        session['enzyme']=request.form['list']
+        session['id']=random.getrandbits(32)
         if enzyme_string:
             num,text1=RunServerClassifier().check_format(enzyme_string)
             print (num,text1)
@@ -186,20 +191,99 @@ def Classification():
                 return "<h1>{}</h1>".format(text1)
             if num==0 : 
                 try:
-                    result_class,result_prob=RunServerClassifier().run_classifier(enzyme_string)
+                    session['result_class'],session['result_prob']=RunServerClassifier().run_classifier(enzyme_string)
                     Template_Dict={}
-                    Template_Dict['result_class']=result_class
-                    Template_Dict['result_prob']=result_prob
+                    Template_Dict['result_class']=session['result_class']
+                    Template_Dict['result_prob']=session['result_prob']
+                    Template_Dict['enzyme']=session['enzyme']
+                    print (Template_Dict)
                     write_html(Template_Dict,"Classification_temp.html","Classification_Results.html")
-                    print ("written template")
-                    return redirect(url_for('Classification_Results'))
+                    return redirect(url_for('Classification_Results',id=session['id']))
                 except:
                     return "<h1>Unexpected error, please email ganesans@salilab.org for help.</h1>"
+        else:
+            return render_template_string("""
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
 
+<head>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Flask Parent Template</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/salilab.css') }}">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="card border" style="border-color: solid black; margin-top:20px">
+                <div class="card-body" style="background-color: white; height: 10rem;">
+                    <div id="header1">
+                        <h1 class="logo" align='center' class='text-center' style="border: none; margin-top: 2px; margin-right: 2px; margin-left: 2px;"><a href={{ url_for('home') }}> SimPathFinder </a></h1>
+                    </div>
+                    <div id="header1">
+                        <h3 class="logo" align='center' class='text-center' style="border: none; margin-top: 2px; margin-right: 2px; margin-left: 2px;"> Find pathway ontology and other similar pathways in KEGG and MetaCyc</h3>
+                    </div>
+    </header>
+    <div class="container">
+        <div id="navigation_lab">
+            <a href="//salilab.org/">Sali Lab Home</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/modweb/">ModWeb</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/modbase/">ModBase</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/evaluation/">ModEval</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/peptide/">PCSS</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/foxs/">FoXS</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//integrativemodeling.org/">IMP</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/multifit/">MultiFit</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/modpipe/">ModPipe</a>
+            &nbsp;&nbsp;&nbsp;
+        </div>
+    </div>
+    <div class="container">
+        <div id="navigation_second">
+            <a href="https://modbase.compbio.ucsf.edu/account/">ModBase Login</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="/home/">Web Server</a>
+            &nbsp;&nbsp;&nbsp;
+        </div>
+    </div>
+    </div>
+    </div>
+
+    <body>
+        <div class="container">
+            <div class="card border" style="border-color: solid black; margin-top:20px">
+                <div class="card-body" style="background-color: white; height: 35rem;">
+                    <h3>Error</h3>
+                    <p align='center'>Enzyme list was not entered, please try again.</p>
+                </div>
+            </div>
+        </div>
+    </body>
+
+   </body>
+<footer>
+   <hr size="2" width="80%">
+    <div class="address">
+        <p class="logo1" align='center' class='text-center' style="border: none; margin-bottom: 5px; margin-top: 5px; margin-right: 0px; margin-left: 0px;">Contact: <a href="ganesans@salilab.org">ganesans@salilab.org</a></p>
+    </div>
+</footer>
+</html>
+        """)
     return render_template("Classification.html")
 
-@app.route("/Classification_Results/")
-def Classification_Results():
+@app.route("/<id>/Classification_Results.html")
+def Classification_Results(id):
     return render_template("Classification_Results.html")
 
 
