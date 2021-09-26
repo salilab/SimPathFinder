@@ -6,3 +6,4 @@
 .DS_Store
 EDA/*
 models/*
+Flaskapp/app/flask_session/*
