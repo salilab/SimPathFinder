@@ -1,8 +1,12 @@
+from datetime import timedelta
+import warnings
+from run_server import RunServerClassifier
 from flask import Flask, flash, render_template, request, url_for, redirect, session, render_template_string
 from flask_session import Session
 
 import jinja2
-import os,sys
+import os
+import sys
 import matplotlib.pyplot as plt
 #import sqlite3 as sql
 #from dbconnect import create_users_table,create_login_table
@@ -11,28 +15,27 @@ import pickle
 import random
 sys.path.insert(0, "../src/pyext/")
 sys.path.append('../..//models/')
-from run_server import RunServerClassifier
-import warnings
-from datetime import timedelta
 
 
 #############
-#JINJA
+# JINJA
 #############
 templateLoader = jinja2.FileSystemLoader(searchpath="./")
 templateEnv = jinja2.Environment(loader=templateLoader)
 
-def write_html(Template_Dict, template_file,output_file):
+
+def write_html(Template_Dict, template_file, output_file):
     template = templateEnv.get_template('templates/'+template_file)
-    outputText=template.render(Template_Dict)
-    with open(os.path.join('templates/',output_file),"w") as fh:
+    outputText = template.render(Template_Dict)
+    with open(os.path.join('templates/', output_file), "w") as fh:
         fh.write(outputText)
 #############
 
+
 #############
-#FLASK
+# FLASK
 #############
-app = Flask(__name__)        
+app = Flask(__name__)
 app.config["SESSION_PERMANENT"] = False
 app.config["SESSION_TYPE"] = "filesystem"
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=5)
@@ -40,18 +43,21 @@ app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(hours=5)
 
 Session(app)
 
+
 @app.context_processor
 def override_url_for():
     return dict(url_for=dated_url_for)
+
 
 def dated_url_for(endpoint, **values):
     if endpoint == 'static':
         filename = values.get('filename', None)
         if filename:
             file_path = os.path.join(app.root_path,
-                                 endpoint, filename)
+                                     endpoint, filename)
             values['q'] = int(os.stat(file_path).st_mtime)
     return url_for(endpoint, **values)
+
 
 @app.after_request
 def add_header(r):
@@ -61,38 +67,42 @@ def add_header(r):
     r.headers['Cache-Control'] = 'public, max-age=0'
     return r
 
+
 @app.route("/")
 @app.route("/home/")
 @app.route("/application/")
-
 def home():
     return render_template("application.html")
+
 
 @app.route("/help/")
 def help():
     return render_template("help.html")
 
-@app.route("/Similarity/",methods=['GET','POST'])
-def Similarity():
-    if request.method=='POST':
-        enzyme_string=request.form['list']
-        session['enzyme']=request.form['list']
-        session['id']=random.getrandbits(32)
-        if session.get("enzyme"):
-            num,text1=RunServerClassifier().check_format(enzyme_string)
-            if num==1 :
-                return "<h1>{}</h1>".format(text1)
-            if num==0 : 
-                try:
-                    session['metacyc'],session['kegg']=RunServerClassifier().run_similarity(enzyme_string)
-                    Template_Dict={}
-                    Template_Dict['enzyme']=session['enzyme']
-                    Template_Dict['results_table_M']=session['metacyc']
-                    Template_Dict['results_table_K']=session['kegg']
-                    print (Template_Dict)
-                    write_html(Template_Dict,"Similarity_temp.html","Similarity_Results.html")
 
-                    return redirect(url_for('Similarity_Results',id=session['id']))
+@app.route("/Similarity/", methods=['GET', 'POST'])
+def Similarity():
+    if request.method == 'POST':
+        enzyme_string = request.form['list']
+        session['enzyme'] = request.form['list']
+        session['id'] = random.getrandbits(32)
+        if session.get("enzyme"):
+            num, text1 = RunServerClassifier().check_format(enzyme_string)
+            if num == 1:
+                return "<h1>{}</h1>".format(text1)
+            if num == 0:
+                try:
+                    session['metacyc'], session['kegg'] = RunServerClassifier(
+                    ).run_similarity(enzyme_string)
+                    Template_Dict = {}
+                    Template_Dict['enzyme'] = session['enzyme']
+                    Template_Dict['results_table_M'] = session['metacyc']
+                    Template_Dict['results_table_K'] = session['kegg']
+                    print(Template_Dict)
+                    write_html(Template_Dict, "Similarity_temp.html",
+                               "Similarity_Results.html")
+
+                    return redirect(url_for('Similarity_Results', id=session['id']))
                 except:
                     return "<h1>Unexpected error, please email ganesans@salilab.org for help.</h1>"
         else:
@@ -175,31 +185,33 @@ def Similarity():
 </html>
         """)
 
-
     return render_template("Similarity.html")
 
-@app.route("/Classification/", methods=['GET','POST'])
+
+@app.route("/Classification/", methods=['GET', 'POST'])
 def Classification():
-    if request.method=='POST':
-        enzyme_string=request.form['list']
-        session['enzyme']=request.form['list']
-        session['id']=random.getrandbits(32)
+    if request.method == 'POST':
+        enzyme_string = request.form['list']
+        session['enzyme'] = request.form['list']
+        session['id'] = random.getrandbits(32)
         if enzyme_string:
-            num,text1=RunServerClassifier().check_format(enzyme_string)
-            print (num,text1)
-            if num==1 :
+            num, text1 = RunServerClassifier().check_format(enzyme_string)
+            print(num, text1)
+            if num == 1:
                 return "<h1>{}</h1>".format(text1)
-            if num==0 : 
+            if num == 0:
                 try:
-                    session['result_class'],session['result_prob'],session['all_class'],session['all_prob']=RunServerClassifier().run_classifier(enzyme_string)
-                    Template_Dict={}
-                    Template_Dict['result_class']=session['result_class']
-                    Template_Dict['result_prob']=session['result_prob']
-                    Template_Dict['all_class']=session['all_class']
-                    Template_Dict['all_prob']=session['all_prob']
-                    Template_Dict['enzyme']=session['enzyme']
-                    write_html(Template_Dict,"Classification_temp.html","Classification_Results.html")
-                    return redirect(url_for('Classification_Results',id=session['id']))
+                    session['result_class'], session['result_prob'], session['all_class'], session['all_prob'] = RunServerClassifier(
+                    ).run_classifier(enzyme_string)
+                    Template_Dict = {}
+                    Template_Dict['result_class'] = session['result_class']
+                    Template_Dict['result_prob'] = session['result_prob']
+                    Template_Dict['all_class'] = session['all_class']
+                    Template_Dict['all_prob'] = session['all_prob']
+                    Template_Dict['enzyme'] = session['enzyme']
+                    write_html(Template_Dict, "Classification_temp.html",
+                               "Classification_Results.html")
+                    return redirect(url_for('Classification_Results', id=session['id']))
                 except:
                     return "<h1>Unexpected error, please email ganesans@salilab.org for help.</h1>"
         else:
@@ -282,6 +294,7 @@ def Classification():
 </html>
         """)
     return render_template("Classification.html")
+
 
 @app.route("/<id>/Classification_Results.html")
 def Classification_Results(id):
