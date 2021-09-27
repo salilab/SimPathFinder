@@ -191,12 +191,13 @@ def Classification():
                 return "<h1>{}</h1>".format(text1)
             if num==0 : 
                 try:
-                    session['result_class'],session['result_prob']=RunServerClassifier().run_classifier(enzyme_string)
+                    session['result_class'],session['result_prob'],session['all_class'],session['all_prob']=RunServerClassifier().run_classifier(enzyme_string)
                     Template_Dict={}
                     Template_Dict['result_class']=session['result_class']
                     Template_Dict['result_prob']=session['result_prob']
+                    Template_Dict['all_class']=session['all_class']
+                    Template_Dict['all_prob']=session['all_prob']
                     Template_Dict['enzyme']=session['enzyme']
-                    print (Template_Dict)
                     write_html(Template_Dict,"Classification_temp.html","Classification_Results.html")
                     return redirect(url_for('Classification_Results',id=session['id']))
                 except:

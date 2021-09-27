@@ -84,9 +84,19 @@ class RunServerClassifier(object):
 		Y_pred = pickle_model.predict(X_test)
 		classes=[ i[0] for i in list(zip(self.categories,Y_pred[0])) if i[1]==1 ]
 		classes_prob=[str(round(i[1],4)) for i in list(zip(self.categories,prediction_prob[0])) if i[0] in classes]
-		output_text1= 'The predicted class/classes: ' +' ,'.join(classes) 
-		output_text2='The predicted class probability/probabilities: ' +' ,'.join(classes_prob)
-		return output_text1,output_text2
+		if len(classes)>0:
+			output_text1= 'The predicted class/classes: ' +' ,'.join(classes) 
+			output_text2='The predicted class probability/probabilities: ' +' ,'.join(classes_prob)
+
+		else:
+			output_text1='The predicted class/classes: No or ambiguous prediction' 
+			output_text2='Probabilities associated with the list of classes:  No or ambiguous prediction' 
+
+		output_text3='List of all class/classes: ' +' ,'.join(self.categories) 
+		probs=[str(round(i,4)) for i in prediction_prob[0]]
+		output_text4='Probabilities associated with the list of all classes: ' +' ,'.join(probs)
+
+		return output_text1,output_text2,output_text3,output_text4
 
 	def similarity_dict_metacyc(self):
 		data_df_multi=pickle.load(open(self.data+self.metacyc,'rb'))
@@ -149,8 +159,10 @@ class RunServerClassifier(object):
 if __name__=='__main__':
 	R=RunServerClassifier()
 	#print (R.check_format('EC:1.1.1.1'))
-	a,b=R.run_similarity('ec:1.2.3.4,ec:2.3.4.44,ec:3.1.23.1')
-	#a,b=R.run_classifier('ec:1.2.3.4,ec:2.3.4.44,ec:3.1.23.1')
+	#a,b=R.run_similarity('ec:1.2.3.4,ec:2.3.4.44,ec:3.1.23.1')
+	a,b,c,d=R.run_classifier('ec:1.2.3.4,ec:2.3.4.44')
 	print (a)
 	print (b)
+	print (c)
+	print (d)
 
