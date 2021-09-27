@@ -79,7 +79,6 @@ class RunServerClassifier(object):
 
     def run_classifier(self, sample):
         sample_list = sample.lower().split(',')
-        model_gensim = self.model
         X_test = self.get_pathway_vectors(sample_list).reshape(1, -1)
         with open(self.classifier, 'rb') as file:
             pickle_model = pickle.load(file)
@@ -134,7 +133,6 @@ class RunServerClassifier(object):
                 columns=['Pathway_test', 'Pathway_train', 'Similarity'])
             for k, l in enumerate(data):
                 sim = self.model.wv.n_similarity(valid, data[k])
-                pathway = list(data_dict.keys())[k]
                 pathway_name = data_dict_name[list(data_dict.keys())[k]]
                 perc = round(sim*100, 2)
                 if sim > 0:
@@ -149,7 +147,6 @@ class RunServerClassifier(object):
                 columns=['Pathway_test', 'Pathway_train', 'Similarity'])
             for k, l in enumerate(data):
                 sim = self.model.wv.n_similarity(valid, data[k])
-                pathway = list(data_dict.keys())[k]
                 pathway_name = data_dict_name[list(data_dict.keys())[k]]
                 perc = round(sim*100, 2)
                 if sim > 0:
@@ -179,8 +176,6 @@ class RunServerClassifier(object):
 
 if __name__ == '__main__':
     R = RunServerClassifier()
-    #print (R.check_format('EC:1.1.1.1'))
-    # a,b=R.run_similarity('ec:1.2.3.4,ec:2.3.4.44,ec:3.1.23.1')
     a, b, c, d = R.run_classifier('ec:1.2.3.4,ec:2.3.4.44')
     print(a)
     print(b)

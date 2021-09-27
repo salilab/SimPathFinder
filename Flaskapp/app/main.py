@@ -1,17 +1,10 @@
 from datetime import timedelta
-import warnings
 from run_server import RunServerClassifier
-from flask import Flask, flash, render_template, request, url_for, redirect, session, render_template_string
+from flask import Flask, render_template, request, url_for, redirect, session, render_template_string
 from flask_session import Session
-
 import jinja2
 import os
 import sys
-import matplotlib.pyplot as plt
-#import sqlite3 as sql
-#from dbconnect import create_users_table,create_login_table
-import gensim
-import pickle
 import random
 sys.path.insert(0, "../src/pyext/")
 sys.path.append('../..//models/')
@@ -103,7 +96,7 @@ def Similarity():
                                "Similarity_Results.html")
 
                     return redirect(url_for('Similarity_Results', id=session['id']))
-                except:
+                except (SyntaxError, ValueError):
                     return "<h1>Unexpected error, please email ganesans@salilab.org for help.</h1>"
         else:
             return render_template_string("""
@@ -212,7 +205,7 @@ def Classification():
                     write_html(Template_Dict, "Classification_temp.html",
                                "Classification_Results.html")
                     return redirect(url_for('Classification_Results', id=session['id']))
-                except:
+                except (SyntaxError, ValueError):
                     return "<h1>Unexpected error, please email ganesans@salilab.org for help.</h1>"
         else:
             return render_template_string("""
