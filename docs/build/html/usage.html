@@ -1,0 +1,397 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="The simpathfinder Python module" href="dnn.html" /><link rel="prev" title="Design principles" href="Design.html" />
+
+    <meta name="generator" content="sphinx-4.2.0, furo 2021.09.22"/>
+        <title>Usage - SimPathFinder version 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=150e365fa939648e89c22f6d7d13c72a1657915a" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=16fb25fabf47304eee183a5e9af80b1ba98259b1" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  body[data-theme="dark"] {
+    --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+  }
+  @media (prefers-color-scheme: dark) {
+    body:not([data-theme="light"]) {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+  }
+</style></head>
+  <body>
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" />
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="10" y1="12" x2="20" y2="12" />
+      <line x1="6" y1="18" x2="20" y2="18" />
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">SimPathFinder version 0.1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">SimPathFinder version 0.1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="UserGuide.html">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Design.html">Design principles</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">Usage</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dnn.html">The <code class="xref py py-mod docutils literal notranslate"><span class="pre">simpathfinder</span></code> Python module</a></li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h1>
+<p>Usage of the library for output consists of first creating a hierarchy of
+Python objects that together describe the system, and then dumping that
+hierarchy to an mmCIF file.</p>
+<p>For a complete worked example, see the
+<a class="reference external" href="https://github.com/ihmwg/python-ihm/blob/master/examples/simple-docking.py">simple docking example</a>.</p>
+<p>The top level of the hierarchy in IHM is the <code class="xref py py-class docutils literal notranslate"><span class="pre">ihm.System</span></code>. All other
+objects are referenced from a System object.</p>
+<p>Any data used anywhere in the modeling (including in validation) can be
+referenced with an <code class="xref py py-class docutils literal notranslate"><span class="pre">ihm.dataset.Dataset</span></code>. For example,
+electron microscopy data is referenced with
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ihm.dataset.EMDensityDataset</span></code> and small angle scattering data with
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ihm.dataset.SASDataset</span></code>. A dataset uses an
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ihm.location.Location</span></code> object to describe where it is stored.
+Typically this is an <code class="xref py py-class docutils literal notranslate"><span class="pre">ihm.location.DatabaseLocation</span></code> for something
+that’s deposited in a experiment-specific database such as PDB, EMDB, PRIDE,
+or EMPIAR, or <code class="xref py py-class docutils literal notranslate"><span class="pre">ihm.location.InputFileLocation</span></code> for something that’s
+stored as a simple file, either on the local disk or at a location described
+with a DOI such as <a class="reference external" href="https://zenodo.org">Zenodo</a> or a publication’s
+supplementary information. See the
+<a class="reference external" href="https://github.com/ihmwg/python-ihm/blob/master/examples/locations.py">locations example</a>
+for more examples.</p>
+<p>The architecture of the system is described with a number of classes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ihm.Entity</span></code> describes each unique sequence.</p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ihm.AsymUnit</span></code> describes each asymmetric unit (chain) in the system.
+For example, a homodimer would consist of two asymmetric units, both
+pointing to the same entity, while a heterodimer contains two entities.
+It is also possible for an entity to exist with no asymmetric units pointing
+to it - this typically corresponds to something seen in an experiment (such
+as a cross-linking study) which was not modeled. Note that the IHM
+extension currently contains no support for symmetry, so two chains that
+are symmetrically related should each be represented as an “asymmetric”
+unit.</p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ihm.Assembly</span></code> groups asymmetric units and/or entities, or parts of
+them. Assemblies are used to describe which parts of the system correspond
+to each input source of data, or that were modeled.</p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ihm.representation.Representation</span></code> describes how each part of the
+system was represented in the modeling, for example
+<code class="xref py py-class docutils literal notranslate"><span class="pre">as</span> <span class="pre">atoms</span></code> or
+<code class="xref py py-class docutils literal notranslate"><span class="pre">as</span> <span class="pre">coarse-grained</span> <span class="pre">spheres</span></code>.</p></li>
+</ul>
+</div></blockquote>
+<p>Restraints, that score or otherwise fit the computational model against
+the input data, can be created as <code class="xref py py-class docutils literal notranslate"><span class="pre">ihm.restraint.Restraint</span></code> objects.
+These generally take as input a <code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code> pointing to
+the input data, and an <code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code> describing which part of the
+model the data corresponds to. For example, there are restraints for
+<code class="xref py py-class docutils literal notranslate"><span class="pre">3D</span> <span class="pre">EM</span></code> and
+<code class="xref py py-class docutils literal notranslate"><span class="pre">small</span> <span class="pre">angle</span> <span class="pre">scattering</span></code>.</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">ihm.protocol.Protocol</span></code> objects describe how models were generated
+from the input data. A protocol can consist of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">multiple</span> <span class="pre">steps</span></code>, such as molecular dynamics or
+Monte Carlo, followed by one or more analyses, such as clustering, filtering,
+rescoring, or validation, described by <code class="xref py py-class docutils literal notranslate"><span class="pre">ihm.analysis.Analysis</span></code> objects.
+These objects generally take an <code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code> to indicate what part
+of the system was considered and a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">group</span> <span class="pre">of</span> <span class="pre">datasets</span></code> to show which data
+guided the modeling or analysis.</p>
+<p><code class="xref py py-class docutils literal notranslate"><span class="pre">ihm.model.Model</span></code> objects give the actual coordinates of the final
+generated models. These point to the <code class="xref py py-class docutils literal notranslate"><span class="pre">Assembly</span></code> of what was
+modeled, the <code class="xref py py-class docutils literal notranslate"><span class="pre">Protocol</span></code> describing how the modeling
+was done, and the <code class="xref py py-class docutils literal notranslate"><span class="pre">Representation</span></code> showing how
+the model was represented.</p>
+<p>Models can be grouped together for any purpose using the
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ihm.model.ModelGroup</span></code> class. If a given group describes an ensemble
+of models, the <code class="xref py py-class docutils literal notranslate"><span class="pre">ihm.model.Ensemble</span></code> class allows for additional
+information on the ensemble to be provided, such as
+<code class="xref py py-class docutils literal notranslate"><span class="pre">localization</span> <span class="pre">densities</span></code> of parts of
+the system and precision. Due to size, generally only representative models
+of an ensemble are deposited in mmCIF, but the <code class="xref py py-class docutils literal notranslate"><span class="pre">Ensemble</span></code>
+class allows the full ensemble to be referred to, for example in a more
+compact binary format (e.g. DCD) deposited at a given DOI. Groups of models
+can also be shown as corresponding to different states of the system using
+the <code class="xref py py-class docutils literal notranslate"><span class="pre">ihm.model.State</span></code> class.</p>
+<p>Metadata can also be added to the system, such as</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ihm.Citation</span></code>: publication(s) that describe this modeling or the
+methods used in it.</p></li>
+<li><p><code class="xref py py-class docutils literal notranslate"><span class="pre">ihm.Software</span></code>: software packages used to process the experimental
+data, generate intermediate inputs, do the modeling itself, and/or
+process the output.</p></li>
+</ul>
+</div></blockquote>
+<section id="residue-numbering">
+<h2>Residue numbering<a class="headerlink" href="#residue-numbering" title="Permalink to this headline">¶</a></h2>
+<p>The library keeps track of several numbering schemes to reflect the reality
+of the data used in modeling:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><em>Internal numbering</em>. Residues are always numbered sequentially starting at
+1 in an <code class="xref py py-class docutils literal notranslate"><span class="pre">Entity</span></code>. All references to residues or residue ranges in
+the library use this numbering.</p></li>
+<li><p><em>Author-provided numbering</em>. If a different numbering scheme is used by the
+authors, for example to correspond to the numbering of the original sequence
+that is modeled, this can be given as an author-provided numbering for
+one or more asymmetric units. See the <code class="docutils literal notranslate"><span class="pre">auth_seq_id_map</span></code> parameter to
+<code class="xref py py-class docutils literal notranslate"><span class="pre">AsymUnit</span></code>. (The mapping between author-provided and internal
+numbering is given in the <code class="docutils literal notranslate"><span class="pre">pdbx_poly_seq_scheme</span></code> table in the mmCIF file.)</p></li>
+<li><p><em>Starting model numbering</em>. If the initial state of the modeling is given
+by one or more PDB files, the numbering of residues in those files may not
+line up with the internal numbering. In this case an offset from starting
+model numbering to internal numbering can be provided - see the <code class="docutils literal notranslate"><span class="pre">offset</span></code>
+parameter to <code class="xref py py-class docutils literal notranslate"><span class="pre">StartingModel</span></code>.</p></li>
+</ul>
+</div></blockquote>
+</section>
+<section id="output">
+<h2>Output<a class="headerlink" href="#output" title="Permalink to this headline">¶</a></h2>
+<p>Once the hierarchy of classes is complete, it can be freely inspected or
+modified. All the classes are simple lightweight Python objects, generally
+with the relevant data available as member variables. For example, modeling
+packages such as <a class="reference external" href="https://integrativemodeling.org">IMP</a> will typically
+generate an IHM hierarchy from their own internal data models, but in many
+cases some information relevant to IHM (such as
+the <code class="xref py py-class docutils literal notranslate"><span class="pre">associated</span> <span class="pre">publication</span></code>) cannot be determined
+automatically and can be filled in by adding more objects to the hierarchy.</p>
+<p>The complete hierarchy can be written out to an mmCIF or BinaryCIF file using
+the <code class="xref py py-func docutils literal notranslate"><span class="pre">ihm.dumper.write()</span></code> function.</p>
+</section>
+<section id="input">
+<h2>Input<a class="headerlink" href="#input" title="Permalink to this headline">¶</a></h2>
+<p>Hierarchies of IHM classes can also be read from mmCIF or BinaryCIF files.
+This is done using the <code class="xref py py-func docutils literal notranslate"><span class="pre">ihm.reader.read()</span></code> function, which returns a list of
+<code class="xref py py-class docutils literal notranslate"><span class="pre">ihm.System</span></code> objects.</p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="dnn.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">The <code class="xref py py-mod docutils literal notranslate"><span class="pre">simpathfinder</span></code> Python module</div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="Design.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Design principles</div>
+                
+              </div>
+            </a>
+        </div>
+
+        <div class="related-information">
+              Copyright &#169; 2021, Sai J. Ganesan |
+            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+              and
+              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+              <a href="https://github.com/pradyunsg/furo">Furo theme</a>. |
+            <a class="muted-link" href="_sources/Usage.rst.txt"
+               rel="nofollow">
+              Show Source
+            </a>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">Usage</a><ul>
+<li><a class="reference internal" href="#residue-numbering">Residue numbering</a></li>
+<li><a class="reference internal" href="#output">Output</a></li>
+<li><a class="reference internal" href="#input">Input</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/scripts/main.js"></script>
+    </body>
+</html>

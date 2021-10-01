@@ -1,6 +1,5 @@
 import pickle
 import numpy as np
-import fasttext
 from sklearn.manifold import TSNE
 import matplotlib.cm as cm
 import matplotlib.pyplot as plt

@@ -1,0 +1,473 @@
+<!doctype html>
+<html class="no-js">
+  <head><meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <meta name="color-scheme" content="light dark"><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+<link rel="index" title="Index" href="genindex.html" /><link rel="search" title="Search" href="search.html" /><link rel="next" title="Design principles" href="Design.html" /><link rel="prev" title="Introduction" href="Introduction.html" />
+
+    <meta name="generator" content="sphinx-4.2.0, furo 2021.09.22"/>
+        <title>User Guide - SimPathFinder version 0.1 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?digest=150e365fa939648e89c22f6d7d13c72a1657915a" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?digest=16fb25fabf47304eee183a5e9af80b1ba98259b1" />
+    
+    
+
+
+<style>
+  body {
+    --color-code-background: #f8f8f8;
+  --color-code-foreground: black;
+  
+  }
+  body[data-theme="dark"] {
+    --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+  }
+  @media (prefers-color-scheme: dark) {
+    body:not([data-theme="light"]) {
+      --color-code-background: #202020;
+  --color-code-foreground: #d0d0d0;
+  
+    }
+  }
+</style></head>
+  <body>
+    <script>
+      document.body.dataset.theme = localStorage.getItem("theme") || "auto";
+    </script>
+    
+<svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+  <symbol id="svg-toc" viewBox="0 0 24 24">
+    <title>Contents</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" />
+      <line x1="4" y1="6" x2="20" y2="6" />
+      <line x1="10" y1="12" x2="20" y2="12" />
+      <line x1="6" y1="18" x2="20" y2="18" />
+    </svg>
+  </symbol>
+  <symbol id="svg-menu" viewBox="0 0 24 24">
+    <title>Menu</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-menu">
+      <line x1="3" y1="12" x2="21" y2="12"></line>
+      <line x1="3" y1="6" x2="21" y2="6"></line>
+      <line x1="3" y1="18" x2="21" y2="18"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-arrow-right" viewBox="0 0 24 24">
+    <title>Expand</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather-chevron-right">
+      <polyline points="9 18 15 12 9 6"></polyline>
+    </svg>
+  </symbol>
+  <symbol id="svg-sun" viewBox="0 0 24 24">
+    <title>Light mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather-sun">
+      <circle cx="12" cy="12" r="5"></circle>
+      <line x1="12" y1="1" x2="12" y2="3"></line>
+      <line x1="12" y1="21" x2="12" y2="23"></line>
+      <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+      <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+      <line x1="1" y1="12" x2="3" y2="12"></line>
+      <line x1="21" y1="12" x2="23" y2="12"></line>
+      <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+      <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+    </svg>
+  </symbol>
+  <symbol id="svg-moon" viewBox="0 0 24 24">
+    <title>Dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-moon">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" />
+    </svg>
+  </symbol>
+  <symbol id="svg-sun-half" viewBox="0 0 24 24">
+    <title>Auto light/dark mode</title>
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="icon-tabler-shadow">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M13 12h5" />
+      <path d="M13 15h4" />
+      <path d="M13 18h1" />
+      <path d="M13 9h4" />
+      <path d="M13 6h1" />
+    </svg>
+  </symbol>
+</svg>
+
+<input type="checkbox" class="sidebar-toggle" name="__navigation" id="__navigation">
+<input type="checkbox" class="sidebar-toggle" name="__toc" id="__toc">
+<label class="overlay sidebar-overlay" for="__navigation">
+  <div class="visually-hidden">Hide navigation sidebar</div>
+</label>
+<label class="overlay toc-overlay" for="__toc">
+  <div class="visually-hidden">Hide table of contents sidebar</div>
+</label>
+
+
+
+<div class="page">
+  <header class="mobile-header">
+    <div class="header-left">
+      <label class="nav-overlay-icon" for="__navigation">
+        <div class="visually-hidden">Toggle site navigation sidebar</div>
+        <i class="icon"><svg><use href="#svg-menu"></use></svg></i>
+      </label>
+    </div>
+    <div class="header-center">
+      <a href="index.html"><div class="brand">SimPathFinder version 0.1 documentation</div></a>
+    </div>
+    <div class="header-right">
+      <div class="theme-toggle-container theme-toggle-header">
+        <button class="theme-toggle">
+          <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+          <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+          <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+          <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+        </button>
+      </div>
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
+        <div class="visually-hidden">Toggle table of contents sidebar</div>
+        <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+      </label>
+    </div>
+  </header>
+  <aside class="sidebar-drawer">
+    <div class="sidebar-container">
+      
+      <div class="sidebar-sticky"><a class="sidebar-brand" href="index.html">
+  
+  
+  <span class="sidebar-brand-text">SimPathFinder version 0.1 documentation</span>
+  
+</a><form class="sidebar-search-container" method="get" action="search.html" role="search">
+  <input class="sidebar-search" placeholder=Search name="q" aria-label="Search">
+  <input type="hidden" name="check_keywords" value="yes">
+  <input type="hidden" name="area" value="default">
+</form>
+<div id="searchbox"></div><div class="sidebar-scroll"><div class="sidebar-tree">
+  <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="Introduction.html">Introduction</a></li>
+<li class="toctree-l1 current current-page"><a class="current reference internal" href="#">User Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Design.html">Design principles</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Usage.html">Usage</a></li>
+</ul>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dnn.html">The <code class="xref py py-mod docutils literal notranslate"><span class="pre">simpathfinder</span></code> Python module</a></li>
+</ul>
+
+</div>
+</div>
+      </div>
+      
+    </div>
+  </aside>
+  <div class="main">
+    <div class="content">
+      <div class="article-container">
+        <div class="content-icon-container">
+          <div class="theme-toggle-container theme-toggle-content">
+            <button class="theme-toggle">
+              <div class="visually-hidden">Toggle Light / Dark / Auto color theme</div>
+              <svg class="theme-icon-when-auto"><use href="#svg-sun-half"></use></svg>
+              <svg class="theme-icon-when-dark"><use href="#svg-moon"></use></svg>
+              <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
+            </button>
+          </div>
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
+            <div class="visually-hidden">Toggle table of contents sidebar</div>
+            <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
+          </label>
+        </div>
+        <article role="main">
+          <section id="user-guide">
+<h1>User Guide<a class="headerlink" href="#user-guide" title="Permalink to this headline">¶</a></h1>
+<p>User guide to the wwPDB integrative structure supplementary table</p>
+<section id="table-of-contents">
+<h2>Table of contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline">¶</a></h2>
+<blockquote>
+<div><ol class="arabic simple">
+<li><dl class="simple">
+<dt><a class="reference internal" href="#model-composition">Model composition</a></dt><dd><ol class="loweralpha simple">
+<li><p><a class="reference internal" href="#entry-composition">Entry composition</a></p></li>
+<li><p><a class="reference internal" href="#datasets-used-for-modeling">Datasets used for modeling</a></p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference internal" href="#representation">Representation</a></dt><dd><ol class="loweralpha simple">
+<li><p><a class="reference internal" href="#atomic-structural-coverage">Atomic structural coverage</a></p></li>
+<li><p><a class="reference internal" href="#rigid-bodies">Rigid bodies</a></p></li>
+<li><p><a class="reference internal" href="#flexible-units">Flexible units</a></p></li>
+<li><p><a class="reference internal" href="#interface-units">Interface units</a></p></li>
+<li><p><a class="reference internal" href="#resolution">Resolution</a></p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference internal" href="#restraints">Restraints</a></dt><dd><ol class="loweralpha simple">
+<li><p><a class="reference internal" href="#physical-restraints">Physical restraints</a></p></li>
+<li><p><a class="reference internal" href="#experimental-information">Experimental information</a></p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference internal" href="#validation">Validation</a></dt><dd><ol class="loweralpha simple">
+<li><p><a class="reference internal" href="#sampling-validation">Sampling validation</a></p></li>
+<li><p><a class="reference internal" href="#clustering-algorithm">Clustering algorithm</a></p></li>
+<li><p><a class="reference internal" href="#clustering-feature">Clustering feature</a></p></li>
+<li><p><a class="reference internal" href="#number-of-ensembles">Number of ensembles</a></p></li>
+<li><p><a class="reference internal" href="#number-of-models-in-ensembles">Number of models in ensembles</a></p></li>
+<li><p><a class="reference internal" href="#model-precision">Model precision</a></p></li>
+<li><p><a class="reference internal" href="#quality-of-data">Quality of data</a></p></li>
+<li><p><a class="reference internal" href="#model-quality">Model Quality</a></p></li>
+<li><p><a class="reference internal" href="#assessment-of-atomic-segments">Assessment of atomic segments</a></p></li>
+<li><p><a class="reference internal" href="#excluded-volume-satisfaction">Excluded volume satisfaction</a></p></li>
+<li><p><a class="reference internal" href="#fit-of-the-model-to-information-used-to-compute-it">Fit of the model to information used to compute it</a></p></li>
+<li><p><a class="reference internal" href="#fit-of-the-model-to-information-not-used-to-compute-it">Fit of the model to information not used to compute it</a></p></li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt><a class="reference internal" href="#methodology-and-software">Methodology and software</a></dt><dd><ol class="loweralpha simple">
+<li><p><a class="reference internal" href="#method-name">Method name</a></p></li>
+<li><p><a class="reference internal" href="#method-details">Method details</a></p></li>
+<li><p><a class="reference internal" href="#software">Software</a></p></li>
+</ol>
+</dd>
+</dl>
+</li>
+</ol>
+</div></blockquote>
+</section>
+<section id="introduction">
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p><em>The wwPDB integrative structure (IM) validation reports are prepared according to the recommendations of the wwPDB Integrative/Hybrid Methods (IHM) Task Force (cite). The report summarises the quality of the structure and includes measures of the quality of the data on which the structures were based, the standard criteria for assessing atomic models, the fit of a model to information used to compute it, the fit of a model to information not used to compute it, and uncertainty in the model. The summary table is an overview of the validation report.</em></p>
+</section>
+<section id="definitions">
+<h2>Definitions<a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple" id="model-composition">
+<li><p><em>Model composition</em>: The total number of unique molecules that are present in the entry, and information used for modeling.</p></li>
+</ol>
+<blockquote id="entry-composition">
+<div><ol class="loweralpha simple">
+<li><p><em>Entry composition</em>: List of unique molecules that are present in the entry.</p></li>
+</ol>
+</div></blockquote>
+<blockquote id="datasets-used-for-modeling">
+<div><ol class="loweralpha simple" start="2">
+<li><p><em>Datasets used for modeling</em>: List of input datasets used for modeling.</p></li>
+</ol>
+</div></blockquote>
+<ol class="arabic simple" id="representation" start="2">
+<li><p><em>Representation</em>: Representation of modeled structure.</p></li>
+</ol>
+<blockquote id="atomic-structural-coverage">
+<div><p>a.*Atomic structural coverage*: Percentage of modeled structure or residues for which atomic structures are available. These structures can include X-ray, NMR, EM, and other comparative models.</p>
+</div></blockquote>
+<blockquote id="rigid-bodies">
+<div><ol class="loweralpha simple" start="2">
+<li><p><em>Rigid bodies</em>: A rigid body consists of multiple coarse-grained (CG) beads or atomic residues. In a rigid body, the beads (or residues) have their relative distances constrained during conformational sampling.</p></li>
+</ol>
+</div></blockquote>
+<blockquote id="flexible-units">
+<div><ol class="loweralpha simple" start="3">
+<li><p><em>Flexible units</em>: Flexible units consist of strings of beads that are restrained by the sequence connectivity.</p></li>
+</ol>
+</div></blockquote>
+<blockquote id="interface-units">
+<div><ol class="loweralpha simple" start="4">
+<li><p><em>Interface units</em>: An automatic definition based on identified interface for each model. Applicable to models built with HADDOCK.</p></li>
+</ol>
+</div></blockquote>
+<blockquote id="resolution">
+<div><ol class="loweralpha simple" start="5">
+<li><p><em>Resolution</em>: Resolution of segments of modeled structure.</p></li>
+</ol>
+</div></blockquote>
+<ol class="arabic simple" id="restraints" start="3">
+<li><p><em>Restraints</em>: A set of restraints used to compute modeled structure.</p></li>
+</ol>
+<blockquote id="physical-restraints">
+<div><ol class="loweralpha simple">
+<li><p><em>Physical restraints</em>: A list of restraints derived from physical principles to compute modeled structure.</p></li>
+</ol>
+</div></blockquote>
+<blockquote id="experimental-information">
+<div><ol class="loweralpha simple" start="2">
+<li><p><em>Experimental information</em>: A list of restraints derived from experimental datasets to compute modeled structure.</p></li>
+</ol>
+</div></blockquote>
+<ol class="arabic simple" id="validation" start="4">
+<li><p><em>Validation</em>: Assessment of models based on validation criteria set by IHM task force (cite).</p></li>
+</ol>
+<blockquote id="sampling-validation">
+<div><ol class="loweralpha simple">
+<li><p><em>Sampling validation</em>: Validation metrics used to assess sampling convergence for stochastic sampling. Sampling precision is defined as the largest allowed Root-mean-square deviation (RMSD) between the cluster centroid and a model within any cluster in the finest clustering for which each sample contributes structures proportionally to its size (considering both the significance and magnitude of the difference) and for which a sufficient proportion of all structures occur in sufficiently large clusters.See (cite) for more details.</p></li>
+</ol>
+</div></blockquote>
+<blockquote id="clustering-algorithm">
+<div><ol class="loweralpha simple" start="2">
+<li><p><em>Clustering algorithm</em>: Clustering algorithm used to analyze resulting solution. See (cite) for more details.</p></li>
+</ol>
+</div></blockquote>
+<blockquote id="clustering-feature">
+<div><ol class="loweralpha simple" start="3">
+<li><p><em>Clustering feature</em>: Feature or reaction co-ordinate used to cluster solution.</p></li>
+</ol>
+</div></blockquote>
+<blockquote id="number-of-ensembles">
+<div><ol class="loweralpha simple" start="4">
+<li><p><em>Number of ensembles</em>: Number of solutions or ensembles of modeled structure.</p></li>
+</ol>
+</div></blockquote>
+<blockquote id="number-of-models-in-ensembles">
+<div><ol class="loweralpha simple" start="5">
+<li><p><em>Number of models in ensemble(s)</em>: Number of structures in the solution ensemble(s).</p></li>
+</ol>
+</div></blockquote>
+<blockquote id="model-precision">
+<div><ol class="loweralpha simple" start="6">
+<li><p><em>Model precision</em>: Measurement of variation among the models in the ensemble upon a global least-squares superposition. See (cite) for more details.</p></li>
+</ol>
+</div></blockquote>
+<blockquote id="quality-of-data">
+<div><ol class="loweralpha simple" start="7">
+<li><p><em>Quality of data</em> : Assessment of data on which modeled structures are based. See user guide on IM validation report.</p></li>
+</ol>
+</div></blockquote>
+<blockquote id="model-quality">
+<div><ol class="loweralpha simple" start="8">
+<li><p><em>Model quality</em> : Assessment of modeled structures based on physical principles</p></li>
+</ol>
+</div></blockquote>
+<blockquote id="assessment-of-atomic-segments">
+<div><ol class="lowerroman simple">
+<li><p><em>Assessment of atomic segments</em> : Assessment of atomic segments in the integrative structure. Quality statistics in this section are calculated using standard compilations of covalent geometry parameters (Engh &amp; Huber, 2001; Parkinson et al., 1996), tools in MolProbity (Chen et al., 2010), Validation-pack (Feng et al.) and the wwPDB chemical component dictionary (CCD). See user guide on PDB validation report.</p></li>
+</ol>
+</div></blockquote>
+<blockquote id="excluded-volume-satisfaction">
+<div><ol class="loweralpha simple" start="10">
+<li><p><em>Excluded volume satisfaction</em> : Assessment of excluded volume satisfaction of CG beads in the modeled structure. Excluded volume between two beads not connected in sequence are satisfied if the distance between them is greater than that of the sum of their radii.</p></li>
+</ol>
+</div></blockquote>
+<blockquote id="fit-of-the-model-to-information-used-to-compute-it">
+<div><ol class="loweralpha simple" start="11">
+<li><p><em>Fit of the model to information used to compute it</em> : Assessment of modeled structure based on data used for modeling. See user guide on IM validation report.</p></li>
+</ol>
+</div></blockquote>
+<blockquote id="fit-of-the-model-to-information-not-used-to-compute-it">
+<div><ol class="loweralpha simple" start="12">
+<li><p><em>Fit of the model to information not used to compute it</em> : Assessment of modeled structure based on data not used for modeling. See user guide on IM validation report.</p></li>
+</ol>
+</div></blockquote>
+<ol class="arabic simple" id="methodology-and-software" start="5">
+<li><p><em>Methodology and software</em>: List of methods on which modeled structures are based and software used to obtain structures.</p></li>
+</ol>
+<blockquote id="method-name">
+<div><ol class="loweralpha simple">
+<li><p><em>Method name</em> : Name(s) of method(s) used to generate modeled structures.</p></li>
+</ol>
+</div></blockquote>
+<blockquote id="method-details">
+<div><ol class="loweralpha simple" start="2">
+<li><p><em>Method details</em> : Details of method(s) used to generate modeled structures.</p></li>
+</ol>
+</div></blockquote>
+<blockquote id="software">
+<div><ol class="loweralpha simple" start="3">
+<li><p><em>Software</em> : Software used to compute modeled structure, also includes scripts used to generate and analyze models.</p></li>
+</ol>
+</div></blockquote>
+<p><em>Updated on October 25th, 2019</em></p>
+</section>
+</section>
+
+        </article>
+      </div>
+      <footer>
+        
+        <div class="related-pages">
+          <a class="next-page" href="Design.html">
+              <div class="page-info">
+                <div class="context">
+                  <span>Next</span>
+                </div>
+                <div class="title">Design principles</div>
+              </div>
+              <svg><use href="#svg-arrow-right"></use></svg>
+            </a>
+          <a class="prev-page" href="Introduction.html">
+              <svg><use href="#svg-arrow-right"></use></svg>
+              <div class="page-info">
+                <div class="context">
+                  <span>Previous</span>
+                </div>
+                
+                <div class="title">Introduction</div>
+                
+              </div>
+            </a>
+        </div>
+
+        <div class="related-information">
+              Copyright &#169; 2021, Sai J. Ganesan |
+            Built with <a href="https://www.sphinx-doc.org/">Sphinx</a>
+              and
+              <a class="muted-link" href="https://pradyunsg.me">@pradyunsg</a>'s
+              <a href="https://github.com/pradyunsg/furo">Furo theme</a>. |
+            <a class="muted-link" href="_sources/UserGuide.rst.txt"
+               rel="nofollow">
+              Show Source
+            </a>
+        </div>
+        
+      </footer>
+    </div>
+    <aside class="toc-drawer">
+      
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            Contents
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">User Guide</a><ul>
+<li><a class="reference internal" href="#table-of-contents">Table of contents</a></li>
+<li><a class="reference internal" href="#introduction">Introduction</a></li>
+<li><a class="reference internal" href="#definitions">Definitions</a></li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
+      
+      
+    </aside>
+  </div>
+</div><script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/scripts/main.js"></script>
+    </body>
+</html>
