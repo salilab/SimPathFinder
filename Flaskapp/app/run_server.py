@@ -176,8 +176,4 @@ class RunServerClassifier(object):
 
 if __name__ == '__main__':
     R = RunServerClassifier()
-    a, b, c, d = R.run_classifier('ec:1.2.3.4,ec:2.3.4.44')
-    print(a)
-    print(b)
-    print(c)
-    print(d)
+    print(R.check_format('ec:1.1.1.1.8'))

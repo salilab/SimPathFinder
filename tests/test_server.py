@@ -5,10 +5,10 @@ import glob
 import os,shutil
 import numpy as np
 import re
-sys.path.insert(0, "../src/pyext/")
-from run_server import RunServerClassifier
-from model import EnsembleClassifier,PathwayClassifier,PathwaySimilarity
+sys.path.insert(0, "../Flaskapp/app/")
 from gensim.models.fasttext import FastText as FT_gensim
+from datetime import timedelta
+from run_server import RunServerClassifier
 import warnings
 
 def ignore_warnings(test_func):
@@ -31,6 +31,8 @@ class Testing(unittest.TestCase):
 		out=R.Check_format('ec:1.1.1.1.1')
 		self.assertEqual(1,out[0])
 		out=R.Check_format('ec:1.1.1.8')
+		self.assertEqual(0,out[0])
+		out=R.Check_format('ec:1.1.1.1.8')
 		self.assertEqual(1,out[0])
 		out=R.Check_format('ec:1.1.1.3m')
 		self.assertEqual(1,out[0])
