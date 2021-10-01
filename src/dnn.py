@@ -15,8 +15,8 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from tensorflow.keras.callbacks import EarlyStopping
 from tensorflow.keras import layers
-# from kerastuner.tuners import RandomSearch
-# import kerastuner
+from kerastuner.tuners import RandomSearch
+import kerastuner
 from sklearn.utils import class_weight
 from sklearn.utils.class_weight import compute_class_weight
 from tensorflow.keras import backend as K
