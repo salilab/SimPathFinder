@@ -1,6 +1,5 @@
 import warnings
 from run_server import RunServerClassifier
-import sys
 import unittest
 
 
