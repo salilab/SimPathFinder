@@ -91,7 +91,6 @@ def Similarity():
                     Template_Dict['enzyme'] = session['enzyme']
                     Template_Dict['results_table_M'] = session['metacyc']
                     Template_Dict['results_table_K'] = session['kegg']
-                    print(Template_Dict)
                     write_html(Template_Dict, "Similarity_temp.html",
                                "Similarity_Results.html")
 

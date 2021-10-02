@@ -2,7 +2,6 @@ import warnings
 from run_server import RunServerClassifier
 import sys
 import unittest
-sys.path.insert(0, "../Flaskapp/app/")
 
 
 def ignore_warnings(test_func):

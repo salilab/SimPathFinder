@@ -106,7 +106,8 @@ class RunServerClassifier(object):
         return output_text1, output_text2, output_text3, output_text4
 
     def similarity_dict_metacyc(self):
-        data_df_multi = pickle.load(open(self.data+self.metacyc, 'rb'))
+        with open(self.data+self.metacyc, 'rb') as f:
+            data_df_multi = pickle.load(f)
         data_Metacyc_part = data_df_multi[['Map', 'Name', 'EC']]
         EC_list = data_Metacyc_part['EC'].to_list()
         EC_dict = {tup[0]: tup[1] for tup in list(
@@ -116,7 +117,8 @@ class RunServerClassifier(object):
         return EC_list, EC_dict, EC_name
 
     def similarity_dict_kegg(self):
-        data_df_multi = pickle.load(open(self.data+self.kegg, 'rb'))
+        with open(self.data+self.kegg, 'rb') as f:
+            data_df_multi = pickle.load(f)
         data_Metacyc_part = data_df_multi[['Map', 'Name', 'EC']]
         EC_list = data_Metacyc_part['EC'].to_list()
         EC_dict = {tup[0]: tup[1] for tup in list(
@@ -176,4 +178,5 @@ class RunServerClassifier(object):
 
 if __name__ == '__main__':
     R = RunServerClassifier()
-    print(R.check_format('ec:1.1.1.1.8'))
+    #print(R.check_format('ec:1.1.1.1.8'))
+    print (R.run_classifier('ec:1.1.2.3'))
