@@ -1,28 +1,12 @@
 from datetime import timedelta
 from run_server import RunServerClassifier
-from flask import Flask, render_template, request, url_for, redirect, session, render_template_string
+from flask import Flask, render_template, request, url_for, session, render_template_string
 from flask_session import Session
-import jinja2
 import os
 import sys
 import random
-sys.path.insert(0, "../src/pyext/")
+# sys.path.insert(0, "../src/pyext/")
 sys.path.append('../..//models/')
-
-
-#############
-# JINJA
-#############
-templateLoader = jinja2.FileSystemLoader(searchpath="./")
-templateEnv = jinja2.Environment(loader=templateLoader)
-
-
-def write_html(Template_Dict, template_file, output_file):
-    template = templateEnv.get_template('templates/'+template_file)
-    outputText = template.render(Template_Dict)
-    with open(os.path.join('templates/', output_file), "w") as fh:
-        fh.write(outputText)
-#############
 
 
 #############
@@ -82,19 +66,14 @@ def Similarity():
         if session.get("enzyme"):
             num, text1 = RunServerClassifier().check_format(enzyme_string)
             if num == 1:
-                return "<h1>{}</h1>".format(text1)
+                return render_template("error.html", text=text1)
             if num == 0:
                 try:
                     session['metacyc'], session['kegg'] = RunServerClassifier(
                     ).run_similarity(enzyme_string)
-                    Template_Dict = {}
-                    Template_Dict['enzyme'] = session['enzyme']
-                    Template_Dict['results_table_M'] = session['metacyc']
-                    Template_Dict['results_table_K'] = session['kegg']
-                    write_html(Template_Dict, "Similarity_temp.html",
-                               "Similarity_Results.html")
-
-                    return redirect(url_for('Similarity_Results', id=session['id']))
+                    return render_template("table.html", table=session['metacyc'].to_html(index=False,
+                                                                                          escape=False, classes='my_css_table', render_links=True), table2=session['kegg'].to_html(index=False,
+                                                                                                                                                                                   escape=False, classes='my_css_table', render_links=True), enzyme=session.get("enzyme"))
                 except (SyntaxError, ValueError):
                     return "<h1>Unexpected error, please email ganesans@salilab.org for help.</h1>"
         else:
@@ -188,22 +167,103 @@ def Classification():
         session['id'] = random.getrandbits(32)
         if enzyme_string:
             num, text1 = RunServerClassifier().check_format(enzyme_string)
-            print(num, text1)
             if num == 1:
-                return "<h1>{}</h1>".format(text1)
+                return render_template("error.html", text=text1)
+
             if num == 0:
                 try:
                     session['result_class'], session['result_prob'], session['all_class'], session['all_prob'] = RunServerClassifier(
                     ).run_classifier(enzyme_string)
-                    Template_Dict = {}
-                    Template_Dict['result_class'] = session['result_class']
-                    Template_Dict['result_prob'] = session['result_prob']
-                    Template_Dict['all_class'] = session['all_class']
-                    Template_Dict['all_prob'] = session['all_prob']
-                    Template_Dict['enzyme'] = session['enzyme']
-                    write_html(Template_Dict, "Classification_temp.html",
-                               "Classification_Results.html")
-                    return redirect(url_for('Classification_Results', id=session['id']))
+                    return render_template_string("""
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title>Flask Parent Template</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/salilab.css') }}">
+</head>
+
+<body>
+    <header>
+        <div class="container">
+            <div class="card border" style="border-color: solid black; margin-top:20px">
+                <div class="card-body" style="background-color: white; height: 10rem;">
+                    <div id="header1">
+                        <h1 class="logo" align='center' class='text-center' style="border: none; margin-top: 2px; margin-right: 2px; margin-left: 2px;"><a href={{ url_for('home') }}> SimPathFinder </a></h1>
+                    </div>
+                    <div id="header1">
+                        <h3 class="logo" align='center' class='text-center' style="border: none; margin-top: 2px; margin-right: 2px; margin-left: 2px;"> Find pathway ontology and other similar pathways in KEGG and MetaCyc</h3>
+                    </div>
+    </header>
+    <div class="container">
+        <div id="navigation_lab">
+            <a href="//salilab.org/">Sali Lab Home</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/modweb/">ModWeb</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/modbase/">ModBase</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/evaluation/">ModEval</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/peptide/">PCSS</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/foxs/">FoXS</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//integrativemodeling.org/">IMP</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/multifit/">MultiFit</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="//salilab.org/modpipe/">ModPipe</a>
+            &nbsp;&nbsp;&nbsp;
+        </div>
+    </div>
+    <div class="container">
+        <div id="navigation_second">
+            <a href="https://modbase.compbio.ucsf.edu/account/">ModBase Login</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="/home/">Web Server</a>
+            &nbsp;&nbsp;&nbsp;
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </header>
+    </div>
+    </header>
+    <div class="container">
+        <div class="card border" style="border-color: solid black; margin-top:20px">
+            <div class="card-body" style="background-color: white; height: 60rem;">
+                <h3 class="font-weight-light" align='center'>Pathway Ontology: Results</h3>
+                <br>
+                <p ><i>The results of the pathway ontology analysis for input list {{session['enzyme']}} is as follows:</i></p>
+                <div class="container">
+                    <div class="card border" style="border-color: solid black; margin-top:20px">
+                        <div class="card-body" style="background-color:#D3D3D3; height: 12rem;">
+                            <p>{{ session['all_class'] }}</p>
+                            <p>{{ session['all_prob'] }}</p>
+                            <p>{{ session['result_class'] }}</p>
+                            <p>{{ session['result_prob'] }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<footer>
+   <hr size="2" width="80%">
+    <div class="address">
+        <p class="logo1" align='center' class='text-center' style="border: none; margin-bottom: 5px; margin-top: 5px; margin-right: 0px; margin-left: 0px;">Contact: <a href="ganesans@salilab.org">ganesans@salilab.org</a></p>
+    </div>
+</footer>
+
+</html>
+                        """)
                 except (SyntaxError, ValueError):
                     return "<h1>Unexpected error, please email ganesans@salilab.org for help.</h1>"
         else:
@@ -286,16 +346,6 @@ def Classification():
 </html>
         """)
     return render_template("Classification.html")
-
-
-@app.route("/<id>/Classification_Results.html")
-def Classification_Results(id):
-    return render_template("Classification_Results.html")
-
-
-@app.route("/<id>/Similarity_Results.html")
-def Similarity_Results(id):
-    return render_template("Similarity_Results.html")
 
 
 if __name__ == "__main__":

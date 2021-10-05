@@ -1,26 +1,33 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+<style type="text/css">
+    
+table.dataframe, .dataframe th, .dataframe td {
+  border: none;
+  border-bottom: 1px solid #C8C8C8;
+  border-collapse: collapse;
+  text-align:left;
+  padding: 10px;
+  margin-bottom: 40px;
+  font-size: 0.9em;
+}
 
+</style>
 <head>
     <html xmlns="http://www.w3.org/1999/xhtml" lang="en-US" xml:lang="en-US">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
     <title>Flask Parent Template</title>
-    
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/salilab.css') }}">
-    
 </head>
-
 <body>
     <header>
         <div class="container">
             <div class="card border" style="border-color: solid black; margin-top:20px">
                 <div class="card-body" style="background-color: white; height: 10rem;">
                     <div id="header1">
-                        
                         <h1 class="logo" align='center' class='text-center' style="border: none; margin-top: 2px; margin-right: 2px; margin-left: 2px;"><a href={{ url_for('home') }}> SimPathFinder </a></h1>
-                        
                     </div>
                     <div id="header1">
                         <h3 class="logo" align='center' class='text-center' style="border: none; margin-top: 2px; margin-right: 2px; margin-left: 2px;"> Find pathway ontology and other similar pathways in KEGG and MetaCyc</h3>
@@ -65,19 +72,26 @@
     <div class="container">
         <div class="card border" style="border-color: solid black; margin-top:20px">
             <div class="card-body" style="background-color: white; height: 60rem;">
-                <h3 class="font-weight-light" align='center'>Pathway Ontology: Results</h3>
+                <h3 class="font-weight-light" align='center'>Pathway Similarity: Results</h3>
                 <br>
-                <p ><i>The results of the pathway ontology analysis for input list ec:1.2.3.4 is as follows:</i></p>
+                <p><i>Top similar pathways for input list {{enzyme}} is as follows:</i></p>
                 <div class="container">
-                    <div class="card border" style="border-color: solid black; margin-top:20px">
-                        <div class="card-body" style="background-color:#D3D3D3; height: 12rem;">
-                            <p>List of all class/classes: Detoxification ,Activation ,Biosynthesis ,Degradation ,Energy ,Glycan ,Macromolecule</p>
-                            <p>Probabilities associated with the list of all classes: 0.0082 ,0.0024 ,0.34 ,0.6519 ,0.0944 ,0.0078 ,0.0004</p>
-                            <p>The predicted class/classes: Degradation</p>
-                            <p>The predicted class probability/probabilities: 0.6519</p>
+                    <div class="card border" style="border-color: solid black; margin-top:20px;margin-bottom:20px;">
+                        <div class="card-body" style="background-color:#D3D3D3; height: 25rem;">
+                        <p class="lead">Top five pathways from MetaCyc</p>
+                        {{ table | safe }}
                         </div>
                     </div>
                 </div>
+                <div class="container">
+                    <div class="card border" style="border-color: solid black; margin-top:20px;margin-bottom:20px;">
+                        <div class="card-body" style="background-color:#D3D3D3; height: 25rem;">
+                        <p class="lead">Top five pathways from KEGG</p>
+                        {{ table2 | safe}}
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>

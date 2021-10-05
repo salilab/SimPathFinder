@@ -165,15 +165,20 @@ class RunServerClassifier(object):
         df_simM['Pathway Link'] = df_simM['Pathway_train'].apply(lambda x: '<a href=https://biocyc.org/META/new-image?object='+str(x)+'>' +
                                                                  'href=https://biocyc.org/META/new-image?object='+str(x)+'</a>')
         Metacyc = df_simM[['Pathway_train', 'Percentage', 'Pathway Link']].sort_values(
-            by=['Percentage'], ascending=False).head().values.tolist()
-        Metacyc.insert(
-            0, ['Pathway', 'Percentage Similarity(%)', 'Pathway Link'])
+            by=['Percentage'], ascending=False).head()
+
+        MetacycF = Metacyc.rename(
+            {'Pathway_train': 'Pathway', 'Percentage': 'Percentage Similarity(%)'}, axis=1)
+
         df_simK['Pathway Link'] = df_simK['Pathway_train'].apply(lambda x: '<a href=https://www.genome.jp/dbget-bin/www_bget?'+str(x)+'>' +
                                                                  'https://www.genome.jp/dbget-bin/www_bget?'+str(x)+'</a>')
         Kegg = df_simK[['Pathway_train', 'Percentage', 'Pathway Link']].sort_values(
-            by=['Percentage'], ascending=False).head().values.tolist()
-        Kegg.insert(0, ['Pathway', 'Percentage Similarity(%)', 'Pathway Link'])
-        return Metacyc, Kegg
+            by=['Percentage'], ascending=False).head()
+
+        KeggF = Kegg.rename({'Pathway_train': 'Pathway',
+                            'Percentage': 'Percentage Similarity(%)'}, axis=1)
+
+        return MetacycF, KeggF
 
 
 if __name__ == '__main__':
