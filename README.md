@@ -97,9 +97,9 @@
 - `ExtractKEGGDataControl` class to evalate KEGG data on control models, child of `ExtractKEGGData`
 
 
-## Test site 
+## Web server 
 
-- [`Test application`](https://modbase.compbio.ucsf.edu/SimPathFinder/) 
+- [`Web server`](https://modbase.compbio.ucsf.edu/SimPathFinder/) 
 
 ## Information
 

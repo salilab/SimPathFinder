@@ -89,19 +89,19 @@ class RunServerClassifier(object):
         classes_prob = [str(round(i[1], 4)) for i in list(
             zip(self.categories, prediction_prob[0])) if i[0] in classes]
         if len(classes) > 0:
-            output_text1 = 'The predicted class/classes: ' + ' ,'.join(classes)
+            output_text1 = 'The predicted class/classes: ' + ', '.join(classes)
             output_text2 = 'The predicted class probability/probabilities: ' + \
-                ' ,'.join(classes_prob)
+                ', '.join(classes_prob)
 
         else:
             output_text1 = 'The predicted class/classes: No or ambiguous prediction'
             output_text2 = 'Probabilities associated with the list of classes:  No or ambiguous prediction'
 
         output_text3 = 'List of all class/classes: ' + \
-            ' ,'.join(self.categories)
+            ', '.join(self.categories)
         probs = [str(round(i, 4)) for i in prediction_prob[0]]
         output_text4 = 'Probabilities associated with the list of all classes: ' + \
-            ' ,'.join(probs)
+            ', '.join(probs)
 
         return output_text1, output_text2, output_text3, output_text4
 
